@@ -20,6 +20,7 @@ public class TwoDACell
     public TwoDACell SetString(string? value)
     {
         _row._cells[_column] = value ?? "";
+        _row.OnCellChanged();
         return this;
     }
     public string AsString()
@@ -30,6 +31,7 @@ public class TwoDACell
     public TwoDACell SetInt(int? value)
     {
         _row._cells[_column] = value?.ToString() ?? "";
+        _row.OnCellChanged();
         return this;
     }
     public int? AsInt()
@@ -40,6 +42,7 @@ public class TwoDACell
     public TwoDACell SetDecimal(decimal? value)
     {
         _row._cells[_column] = value?.ToString() ?? "";
+        _row.OnCellChanged();
         return this;
     }
     public decimal? AsDecimal()
@@ -55,6 +58,7 @@ public class TwoDACell
             false => "0",
             _ => ""
         };
+        _row.OnCellChanged();
         return this;
     }
     public bool? AsBool()

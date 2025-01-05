@@ -1,0 +1,41 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:vm="using:KotorEditor2DA"
+        x:DataType="vm:MainWindowViewModel"
+        x:Class="KotorEditor2DA.MainWindow"
+        Title="KotorEditor2DA">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open..." Click="MenuItem_Click" />
+            </MenuItem>
+        </Menu>
+
+        <TextBox DockPanel.Dock="Top" Text="{Binding Filter}" />
+        
+        <DataGrid Margin="20" ItemsSource="{Binding Rows}" Name="Griddy"
+              AutoGenerateColumns="False" IsReadOnly="False"
+              GridLinesVisibility="All" FrozenColumnCount="1"
+              CellEditEnded="DataGrid_CellEditEnded"
+              BorderThickness="1" BorderBrush="Gray">
+            <DataGrid.Columns>
+                <!--<DataGridTemplateColumn Header="Row Index">
+                    <DataTemplate>
+                        <DataGridRowHeader>
+                            <TextBlock Text="lol"></TextBlock>
+                        </DataGridRowHeader>
+                    </DataTemplate>
+                    
+                    
+                </DataGridTemplateColumn>-->
+                <!--<DataGridTextColumn Header="Row Index" Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=Index}">
+                    
+                </DataGridTextColumn>-->
+                
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>
