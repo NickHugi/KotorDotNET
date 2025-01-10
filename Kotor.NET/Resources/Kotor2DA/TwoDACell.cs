@@ -1,7 +1,11 @@
-﻿namespace Kotor.NET.Resources.Kotor2DA;
+﻿using Kotor.NET.Resources.Kotor2DA.Events;
+
+namespace Kotor.NET.Resources.Kotor2DA;
 
 public class TwoDACell
 {
+    public event EventHandler<TwoDACellChangedEventArgs> CellChanged;
+
     internal readonly TwoDA _twoda;
     internal readonly TwoDARow _row;
     internal readonly string _column;
@@ -20,6 +24,9 @@ public class TwoDACell
     public TwoDACell SetString(string? value)
     {
         _row._cells[_column] = value ?? "";
+
+        EmitCellChanged();
+
         return this;
     }
     public string AsString()
@@ -30,6 +37,9 @@ public class TwoDACell
     public TwoDACell SetInt(int? value)
     {
         _row._cells[_column] = value?.ToString() ?? "";
+
+        EmitCellChanged();
+
         return this;
     }
     public int? AsInt()
@@ -40,6 +50,9 @@ public class TwoDACell
     public TwoDACell SetDecimal(decimal? value)
     {
         _row._cells[_column] = value?.ToString() ?? "";
+
+        EmitCellChanged();
+
         return this;
     }
     public decimal? AsDecimal()
@@ -55,6 +68,9 @@ public class TwoDACell
             false => "0",
             _ => ""
         };
+
+        EmitCellChanged();
+
         return this;
     }
     public bool? AsBool()
@@ -65,5 +81,10 @@ public class TwoDACell
             "0" => false,
             "" => null
         };
+    }
+
+    private void EmitCellChanged()
+    {
+        CellChanged.Invoke(this, new(_row.RowHeader, _column, AsString()));
     }
 }
