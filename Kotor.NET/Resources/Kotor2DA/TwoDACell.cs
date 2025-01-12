@@ -25,7 +25,7 @@ public class TwoDACell
     {
         _row._cells[_column] = value ?? "";
 
-        EmitCellChanged();
+        _row.EmitCellChanged(_column);
 
         return this;
     }
@@ -38,7 +38,7 @@ public class TwoDACell
     {
         _row._cells[_column] = value?.ToString() ?? "";
 
-        EmitCellChanged();
+        _row.EmitCellChanged(_column);
 
         return this;
     }
@@ -51,7 +51,7 @@ public class TwoDACell
     {
         _row._cells[_column] = value?.ToString() ?? "";
 
-        EmitCellChanged();
+        _row.EmitCellChanged(_column);
 
         return this;
     }
@@ -69,7 +69,7 @@ public class TwoDACell
             _ => ""
         };
 
-        EmitCellChanged();
+        _row.EmitCellChanged(_column);
 
         return this;
     }
@@ -81,10 +81,5 @@ public class TwoDACell
             "0" => false,
             "" => null
         };
-    }
-
-    private void EmitCellChanged()
-    {
-        CellChanged.Invoke(this, new(_row.RowHeader, _column, AsString()));
     }
 }

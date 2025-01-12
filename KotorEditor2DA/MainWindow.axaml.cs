@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Common;
 using System.Globalization;
 using System.Linq;
@@ -69,7 +70,7 @@ public partial class MainWindow : Window
 
     private void DataGrid_CellEditEnded(object? sender, Avalonia.Controls.DataGridCellEditEndedEventArgs e)
     {
-        var value = ((List<string>)e.Row.DataContext!).ElementAt(e.Column.DisplayIndex);
+        var value = ((ObservableCollection<string>)e.Row.DataContext!).ElementAt(e.Column.DisplayIndex - 1);
         Model.EditCell((string)e.Column.Header, e.Row.Index, value);
     }
 
@@ -85,7 +86,7 @@ public partial class MainWindow : Window
         if (files.Count ==  1)
         {
             var twoda = TwoDA.FromFile(files[0].Path.AbsolutePath);
-            Model.Load2DA(twoda);
+            Model.ReadModel(twoda);
         }
     }
 }

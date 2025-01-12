@@ -1,11 +1,14 @@
-﻿namespace Kotor.NET.Resources.Kotor2DA;
+﻿using System.Data.Common;
+using Kotor.NET.Resources.Kotor2DA.Events;
+
+namespace Kotor.NET.Resources.Kotor2DA;
 
 public class TwoDARow
 {
     public string RowHeader { get; set; }
     public int Index => _twoda._rows.IndexOf(this);
 
-    public event EventHandler CellChanged;
+    public event EventHandler<TwoDACellChangedEventArgs> CellChanged = delegate { };
 
     internal readonly Dictionary<string, string> _cells;
     internal readonly TwoDA _twoda;
@@ -22,9 +25,9 @@ public class TwoDARow
         return new(_twoda, this, underColumn);
     }
 
-    internal void OnCellChanged()
+
+    internal void EmitCellChanged(string column)
     {
-        if (CellChanged is not null)
-            CellChanged(this, EventArgs.Empty);
+        CellChanged.Invoke(this, new(Index, RowHeader, column, _cells[column]));
     }
 }

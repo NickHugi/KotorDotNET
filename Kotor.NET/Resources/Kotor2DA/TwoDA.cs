@@ -12,8 +12,8 @@ namespace Kotor.NET.Resources.Kotor2DA;
 
 public class TwoDA
 {
-    public event EventHandler<TwoDAColumnChangedEventArgs> ColumnChanged;
-    public event EventHandler<TwoDARowChangedEventArgs> RowChanged;
+    public event EventHandler<TwoDAColumnChangedEventArgs> ColumnChanged = delegate { };
+    public event EventHandler<TwoDARowChangedEventArgs> RowChanged = delegate { };
 
     internal readonly HashSet<string> _columnHeaders;
     internal readonly List<TwoDARow> _rows;
@@ -86,7 +86,7 @@ public class TwoDA
         var row = GetRow(index);
         _rows.Remove(row);
 
-        RowChanged(this, new());
+        RowChanged(this, new(TwoDARowAction.Removed, row.RowHeader, index));
     }
     public void RemoveRow(string column)
     {
@@ -111,13 +111,15 @@ public class TwoDA
 
         _columnHeaders.Add(header);
 
-        ColumnChanged.Invoke(this, new(TwoDAColumnAction.Added, header));
+        if (ColumnChanged != null)
+            ColumnChanged.Invoke(this, new(TwoDAColumnAction.Added, header));
     }
 
     public void RemoveColumn(string header)
     {
         _columnHeaders.Remove(header);
 
-        ColumnChanged.Invoke(this, new(TwoDAColumnAction.Removed, header));
+        if (RowChanged != null)
+            ColumnChanged.Invoke(this, new(TwoDAColumnAction.Removed, header));
     }
 }

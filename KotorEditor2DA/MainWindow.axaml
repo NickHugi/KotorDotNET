@@ -16,7 +16,7 @@
 
         <TextBox DockPanel.Dock="Top" Text="{Binding Filter}" />
         
-        <DataGrid Margin="20" ItemsSource="{Binding Rows}" Name="Griddy"
+        <DataGrid Margin="20" ItemsSource="{Binding Rows, Mode=TwoWay}" Name="Griddy"
               AutoGenerateColumns="False" IsReadOnly="False"
               GridLinesVisibility="All" FrozenColumnCount="1"
               CellEditEnded="DataGrid_CellEditEnded"
