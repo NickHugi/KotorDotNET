@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kotor.NET.Exceptions;
 using Kotor.NET.Resources.KotorTXI;
 
 namespace Kotor.NET.Formats.AsciiTXI.Serialisation;
@@ -18,57 +19,64 @@ public class TXIAsciiDeserializer
 
     public TXI Deserialize()
     {
-        var txi = new TXI();
-
-        foreach (var field in _ascii.Fields)
+        try
         {
-            Action<TXI, TXIAsciiField> assignFieldAction = field.Instruction switch
+            var txi = new TXI();
+
+            foreach (var field in _ascii.Fields)
             {
-                TXIAsciiInstructions.AlphaMean => AssignAlphaMean,
-                TXIAsciiInstructions.BumpmapTexture => AssignBumpmapTexture,
-                TXIAsciiInstructions.BumpShinyTexture => AssignBumpShinyTexture,
-                TXIAsciiInstructions.EnvMapTexture => AssignEnvMapTexture,
-                TXIAsciiInstructions.Blending => AssignBlending,
-                TXIAsciiInstructions.WaterAlpha => AssignWaterAlpha,
-                TXIAsciiInstructions.Cube => AssignCube,
-                TXIAsciiInstructions.IsLightmap => AssignIsLightmap,
-                TXIAsciiInstructions.Decal => AssignDecal,
-                TXIAsciiInstructions.DownsampleMin => AssignDownsampleMin,
-                TXIAsciiInstructions.DownsampleMax => AssignDownsampleMax,
-                TXIAsciiInstructions.Mipmap => AssignMipmap,
-                TXIAsciiInstructions.CompressTexture => AssignCompress,
-                TXIAsciiInstructions.Clamp => AssignClamp,
-                TXIAsciiInstructions.Filter => AssignFilter,
-                TXIAsciiInstructions.IsBumpmap => AssignIsBumpmap,
-                TXIAsciiInstructions.BumpmapScale => AssignBumpmapScale,
-                TXIAsciiInstructions.BumpmapScaling => AssignBumpmapScaling,
-                TXIAsciiInstructions.IsDiffuseBumpmap => AssignIsDiffuseBumpmap,
-                TXIAsciiInstructions.IsSpecularBumpmap => AssignIsSpecularBumpmap,
-                TXIAsciiInstructions.ProcedureType => AssignProcedureType,
-                TXIAsciiInstructions.DefaultWidth => AssignDefaultWidth,
-                TXIAsciiInstructions.DefaultHeight => AssignDefaultHeight,
-                TXIAsciiInstructions.NumX => AssignNumFramesOnXAxis,
-                TXIAsciiInstructions.NumY => AssignNumFramesOnYAxis,
-                TXIAsciiInstructions.FPS => AssignFPS,
-                TXIAsciiInstructions.Speed => AssignSpeed,
-                TXIAsciiInstructions.Distort => AssignDistort,
-                TXIAsciiInstructions.DistortAmplitude => AssignDistortionAmplitude,
-                TXIAsciiInstructions.BaselineHeight => AssignBaselineHeight,
-                TXIAsciiInstructions.NumChars => AssignNumberOfCharacters,
-                TXIAsciiInstructions.FontHeight => AssignFontHeight,
-                TXIAsciiInstructions.TextureWidth => AssignTextureWidth,
-                TXIAsciiInstructions.SpacingB => AssignSpacingB,
-                TXIAsciiInstructions.SpacingR => AssignSpacingR,
-                TXIAsciiInstructions.CaretIndent => AssignCaretIndent,
-                TXIAsciiInstructions.UpperLeftCoords => AssignUpperLeftCoords,
-                TXIAsciiInstructions.LowerRightCoords => AssignLowerRightCoords,
-                _ => throw new NotImplementedException($"Unknown instruction {field.Instruction}")
-            };
+                Action<TXI, TXIAsciiField> assignFieldAction = field.Instruction switch
+                {
+                    TXIAsciiInstructions.AlphaMean => AssignAlphaMean,
+                    TXIAsciiInstructions.BumpmapTexture => AssignBumpmapTexture,
+                    TXIAsciiInstructions.BumpShinyTexture => AssignBumpShinyTexture,
+                    TXIAsciiInstructions.EnvMapTexture => AssignEnvMapTexture,
+                    TXIAsciiInstructions.Blending => AssignBlending,
+                    TXIAsciiInstructions.WaterAlpha => AssignWaterAlpha,
+                    TXIAsciiInstructions.Cube => AssignCube,
+                    TXIAsciiInstructions.IsLightmap => AssignIsLightmap,
+                    TXIAsciiInstructions.Decal => AssignDecal,
+                    TXIAsciiInstructions.DownsampleMin => AssignDownsampleMin,
+                    TXIAsciiInstructions.DownsampleMax => AssignDownsampleMax,
+                    TXIAsciiInstructions.Mipmap => AssignMipmap,
+                    TXIAsciiInstructions.CompressTexture => AssignCompress,
+                    TXIAsciiInstructions.Clamp => AssignClamp,
+                    TXIAsciiInstructions.Filter => AssignFilter,
+                    TXIAsciiInstructions.IsBumpmap => AssignIsBumpmap,
+                    TXIAsciiInstructions.BumpmapScale => AssignBumpmapScale,
+                    TXIAsciiInstructions.BumpmapScaling => AssignBumpmapScaling,
+                    TXIAsciiInstructions.IsDiffuseBumpmap => AssignIsDiffuseBumpmap,
+                    TXIAsciiInstructions.IsSpecularBumpmap => AssignIsSpecularBumpmap,
+                    TXIAsciiInstructions.ProcedureType => AssignProcedureType,
+                    TXIAsciiInstructions.DefaultWidth => AssignDefaultWidth,
+                    TXIAsciiInstructions.DefaultHeight => AssignDefaultHeight,
+                    TXIAsciiInstructions.NumX => AssignNumFramesOnXAxis,
+                    TXIAsciiInstructions.NumY => AssignNumFramesOnYAxis,
+                    TXIAsciiInstructions.FPS => AssignFPS,
+                    TXIAsciiInstructions.Speed => AssignSpeed,
+                    TXIAsciiInstructions.Distort => AssignDistort,
+                    TXIAsciiInstructions.DistortAmplitude => AssignDistortionAmplitude,
+                    TXIAsciiInstructions.BaselineHeight => AssignBaselineHeight,
+                    TXIAsciiInstructions.NumChars => AssignNumberOfCharacters,
+                    TXIAsciiInstructions.FontHeight => AssignFontHeight,
+                    TXIAsciiInstructions.TextureWidth => AssignTextureWidth,
+                    TXIAsciiInstructions.SpacingB => AssignSpacingB,
+                    TXIAsciiInstructions.SpacingR => AssignSpacingR,
+                    TXIAsciiInstructions.CaretIndent => AssignCaretIndent,
+                    TXIAsciiInstructions.UpperLeftCoords => AssignUpperLeftCoords,
+                    TXIAsciiInstructions.LowerRightCoords => AssignLowerRightCoords,
+                    _ => throw new NotImplementedException($"Unknown instruction {field.Instruction}")
+                };
 
-            assignFieldAction(txi, field);
+                assignFieldAction(txi, field);
+            }
+
+            return txi;
         }
-
-        return txi;
+        catch (Exception e)
+        {
+            throw new DeserializationException("Failed to deserialize the TXI data.", e);
+        }
     }
 
     private void AssignAlphaMean(TXI txi, TXIAsciiField field) => txi.Material.AlphaMean = decimal.Parse(field.Values[0]);

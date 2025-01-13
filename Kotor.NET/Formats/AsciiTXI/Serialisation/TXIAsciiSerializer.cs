@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kotor.NET.Common.Data;
+using Kotor.NET.Exceptions;
 using Kotor.NET.Resources.KotorTXI;
 
 namespace Kotor.NET.Formats.AsciiTXI.Serialisation;
@@ -19,15 +20,22 @@ public class TXIAsciiSerializer
 
     public TXIAscii Serialize()
     {
-        var ascii = new TXIAscii();
+        try
+        {
+            var ascii = new TXIAscii();
 
-        SerializeMaterial(ascii, _txi.Material);
-        SerializeTexture(ascii, _txi.Texture);
-        SerializeBumpmap(ascii, _txi.Bumpmap);
-        SerializeProcedure(ascii, _txi.Procedure);
-        SerializeFont(ascii, _txi.Font);
+            SerializeMaterial(ascii, _txi.Material);
+            SerializeTexture(ascii, _txi.Texture);
+            SerializeBumpmap(ascii, _txi.Bumpmap);
+            SerializeProcedure(ascii, _txi.Procedure);
+            SerializeFont(ascii, _txi.Font);
 
-        return ascii;
+            return ascii;
+        }
+        catch (Exception e)
+        {
+            throw new SerializationException("Failed to serialize the TXI data.", e);
+        }
     }
 
     public void SerializeMaterial(TXIAscii ascii, TXIMaterial material)
