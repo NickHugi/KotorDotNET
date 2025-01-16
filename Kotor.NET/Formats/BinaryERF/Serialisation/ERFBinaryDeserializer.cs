@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Kotor.NET.Common.Data;
+using Kotor.NET.Exceptions;
 using Kotor.NET.Resources.KotorERF;
 
 namespace Kotor.NET.Formats.BinaryERF.Serialisation;
@@ -20,16 +21,23 @@ public class ERFBinaryDeserializer
 
     public ERF Deserialize()
     {
-        var erf = new ERF();
-
-        for (int i = 0; i < _binary.ResourceEntries.Count; i++)
+        try
         {
-            var resref = _binary.KeyEntries[i].ResRef;
-            var type = ResourceType.ByID(_binary.KeyEntries[i].ResType);
-            var data = _binary.ResourceData[i];
-            erf.Add(resref, type, data);
-        }
+            var erf = new ERF();
 
-        return erf;
+            for (int i = 0; i < _binary.ResourceEntries.Count; i++)
+            {
+                var resref = _binary.KeyEntries[i].ResRef;
+                var type = ResourceType.ByID(_binary.KeyEntries[i].ResType);
+                var data = _binary.ResourceData[i];
+                erf.Add(resref, type, data);
+            }
+
+            return erf;
+        }
+        catch (Exception e)
+        {
+            throw new DeserializationException("Failed to deserialize the ERF data.", e);
+        }
     }
 }

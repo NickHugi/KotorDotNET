@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Kotor.NET.Resources.KotorLIP;
@@ -18,22 +19,29 @@ public class LIPBinarySerializer
 
     public LIPBinary Serialize()
     {
-        var binary = new LIPBinary();
-
-        binary.FileHeader.FileType = LIPBinaryFileHeader.FILE_TYPES[0];
-        binary.FileHeader.FileVersion = LIPBinaryFileHeader.FILE_VERSION;
-
-        foreach (var frame in _lip)
+        try
         {
-            binary.KeyFrames.Add(new LIPBinaryKeyFrame
+            var binary = new LIPBinary();
+
+            binary.FileHeader.FileType = LIPBinaryFileHeader.FILE_TYPES[0];
+            binary.FileHeader.FileVersion = LIPBinaryFileHeader.FILE_VERSION;
+
+            foreach (var frame in _lip)
             {
-                Time = frame.Time,
-                Shape = (byte)frame.Shape,
-            });
+                binary.KeyFrames.Add(new LIPBinaryKeyFrame
+                {
+                    Time = frame.Time,
+                    Shape = (byte)frame.Shape,
+                });
+            }
+
+            binary.Recalculate();
+
+            return binary;
         }
-
-        binary.Recalculate();
-
-        return binary;
+        catch (Exception e)
+        {
+            throw new SerializationException("Failed to serialize the LIP data.", e);
+        }
     }
 }

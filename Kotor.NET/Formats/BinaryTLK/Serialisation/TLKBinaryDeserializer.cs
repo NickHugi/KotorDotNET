@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Kotor.NET.Exceptions;
 using Kotor.NET.Resources.KotorTLK;
 
 namespace Kotor.NET.Formats.BinaryTLK.Serialisation;
@@ -19,15 +20,22 @@ public class TLKBinaryDeserializer
 
     public TLK Deserialize()
     {
-        var tlk = new TLK();
-
-        for (int i = 0; i < _binary.Entries.Count; i++)
+        try
         {
-            var text = _binary.Strings[i];
-            var sound = _binary.Entries[i].SoundResRef;
-            tlk.Add(text, sound);
-        }
+            var tlk = new TLK();
 
-        return tlk;
+            for (int i = 0; i < _binary.Entries.Count; i++)
+            {
+                var text = _binary.Strings[i];
+                var sound = _binary.Entries[i].SoundResRef;
+                tlk.Add(text, sound);
+            }
+
+            return tlk;
+        }
+        catch (Exception e)
+        {
+            throw new DeserializationException("Failed to deserialize the TLK data.", e);
+        }
     }
 }

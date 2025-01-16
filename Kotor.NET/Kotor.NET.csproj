@@ -7,9 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Formats\BinaryBIF\Serialisation\" />
-    <Folder Include="Formats\BinaryBWM\Serialisation\" />
-    <Folder Include="Formats\BinaryGFF\Serialisation\" />
     <Folder Include="Formats\BinaryKEY\Serialisation\" />
     <Folder Include="Formats\BinaryLTR\Serialisation\" />
     <Folder Include="Formats\BinaryMDL\Serialisation\" />

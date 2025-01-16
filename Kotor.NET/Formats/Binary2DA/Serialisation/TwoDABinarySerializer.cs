@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kotor.NET.Exceptions;
 using Kotor.NET.Resources.Kotor2DA;
 
 namespace Kotor.NET.Formats.Binary2DA.Serialisation;
@@ -18,15 +19,22 @@ public class TwoDABinarySerializer
 
     public TwoDABinary Serialize()
     {
-        var binary = new TwoDABinary();
-
-        binary.ColumnHeaders = _twoda.GetColumns().ToList();
-        binary.RowHeaders = _twoda.GetRows().Select(x => x.RowHeader).ToList();
-        binary.CellValues = _twoda.GetRows().SelectMany(x =>
+        try
         {
-            return binary.ColumnHeaders.Select(y => x.GetCell(y).AsString());
-        }).ToList();
+            var binary = new TwoDABinary();
 
-        return binary;
+            binary.ColumnHeaders = _twoda.GetColumns().ToList();
+            binary.RowHeaders = _twoda.GetRows().Select(x => x.RowHeader).ToList();
+            binary.CellValues = _twoda.GetRows().SelectMany(x =>
+            {
+                return binary.ColumnHeaders.Select(y => x.GetCell(y).AsString());
+            }).ToList();
+
+            return binary;
+        }
+        catch (Exception e) 
+        {
+            throw new SerializationException("Failed to serialize the 2DA data.", e);
+        }
     }
 }

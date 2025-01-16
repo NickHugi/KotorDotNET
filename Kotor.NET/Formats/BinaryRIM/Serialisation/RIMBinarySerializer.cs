@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Kotor.NET.Resources.KotorRIM;
@@ -18,25 +19,32 @@ public class RIMBinarySerializer
 
     public RIMBinary Serialize()
     {
-        var binary = new RIMBinary();
-
-        binary.FileHeader.FileType = RIMBinaryFileHeader.FILE_TYPES[0];
-        binary.FileHeader.FileVersion = RIMBinaryFileHeader.FILE_VERSION;
-
-        foreach (var resource in _rim)
+        try
         {
-            binary.ResourceEntries.Add(new()
+            var binary = new RIMBinary();
+
+            binary.FileHeader.FileType = RIMBinaryFileHeader.FILE_TYPES[0];
+            binary.FileHeader.FileVersion = RIMBinaryFileHeader.FILE_VERSION;
+
+            foreach (var resource in _rim)
             {
-                ResRef = resource.ResRef,
-                ResourceID = resource.Index,
-                ResourceTypeID = resource.Type.ID,
-            });
+                binary.ResourceEntries.Add(new()
+                {
+                    ResRef = resource.ResRef,
+                    ResourceID = resource.Index,
+                    ResourceTypeID = resource.Type.ID,
+                });
 
-            binary.ResourceData.Add(resource.Data);
+                binary.ResourceData.Add(resource.Data);
+            }
+
+            binary.Recalculate();
+
+            return binary;
         }
-
-        binary.Recalculate();
-
-        return binary;
+        catch (Exception e)
+        {
+            throw new SerializationException("Failed to serialize the RIM data.", e);
+        }
     }
 }
