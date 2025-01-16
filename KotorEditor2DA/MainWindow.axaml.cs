@@ -12,6 +12,9 @@ using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml.Templates;
+using Avalonia.Platform.Storage;
+using Kotor.DevelopmentKit.Base.Common;
+using Kotor.NET.Formats.Binary2DA.Serialisation;
 using Kotor.NET.Resources.Kotor2DA;
 using Tmds.DBus.Protocol;
 
@@ -29,9 +32,9 @@ public partial class MainWindow : Window
         InitializeComponent();
 
         RefreshColumns(model);
-        model.PropertyChanged += (sender, args) =>
+        model.Resource.PropertyChanged += (sender, args) =>
         {
-            if (args.PropertyName == nameof(Model.Columns))
+            if (args.PropertyName == nameof(Model.Resource.Columns))
                 RefreshColumns(model);
         };
     }
@@ -46,18 +49,19 @@ public partial class MainWindow : Window
             {
                 return new TextBlock
                 {
-                    [!TextBlock.TextProperty] = new Binding
-                    {
-                        Path = "Index",
-                        RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor) {  AncestorType = typeof(DataGridRow)},
-                    }
+                    //[!TextBlock.TextProperty] = new Binding
+                    //{
+                    //    Path = "Index",
+                    //    RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor) {  AncestorType = typeof(DataGridRow)},
+                    //}
                 };
-            })
+            }),
+            Width = DataGridLength.SizeToCells
         });
 
-        for (int i = 0; i < model.Columns.Count(); i++)
+        for (int i = 0; i < model.Resource.Columns.Count(); i++)
         {
-            var column = model.Columns.ElementAt(i);
+            var column = model.Resource.Columns.ElementAt(i);
 
             Griddy.Columns.Add(new DataGridTextColumn()
             {
@@ -68,25 +72,45 @@ public partial class MainWindow : Window
         }
     }
 
-    private void DataGrid_CellEditEnded(object? sender, Avalonia.Controls.DataGridCellEditEndedEventArgs e)
+    #region Events
+    private async void MenuItem_New_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        var value = ((ObservableCollection<string>)e.Row.DataContext!).ElementAt(e.Column.DisplayIndex - 1);
-        Model.EditCell((string)e.Column.Header, e.Row.Index, value);
+        Model.NewFile();
     }
 
-    private async void MenuItem_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private async void MenuItem_Open_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         var files = await TopLevel.GetTopLevel(this).StorageProvider.OpenFilePickerAsync(new()
         {
             Title = "Open 2DA File",
             AllowMultiple = false,
-            // TODO FileTypeFilter 
+            FileTypeFilter = [FilePickerTypes.TwoDA],
         });
 
         if (files.Count ==  1)
         {
-            var twoda = TwoDA.FromFile(files[0].Path.AbsolutePath);
-            Model.ReadModel(twoda);
+            Model.LoadFromFile(files[0].Path.AbsolutePath);
         }
     }
+
+    private async void MenuItem_Save_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        Model.SaveToFile();
+    }
+
+    private async void MenuItem_SaveAs_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        var file = await TopLevel.GetTopLevel(this).StorageProvider.SaveFilePickerAsync(new()
+        {
+            Title = "Save 2DA File",
+            ShowOverwritePrompt = true,
+            FileTypeChoices = [FilePickerTypes.TwoDA],
+        });
+
+        if (file is not null)
+        {
+            Model.SaveToFile(file.Path.AbsolutePath);
+        }
+    }
+    #endregion
 }

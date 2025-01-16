@@ -8,34 +8,32 @@
         x:Class="KotorEditor2DA.MainWindow"
         Title="KotorEditor2DA">
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
+        <Menu DockPanel.Dock="Top" BorderThickness="0 0 0 1" BorderBrush="LightGray">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open..." Click="MenuItem_Click" />
+                <MenuItem Header="_New" Click="MenuItem_New_Click" />
+                <MenuItem Header="_Open" Click="MenuItem_Open_Click" />
+                <MenuItem Header="_Save" Click="MenuItem_Save_Click" IsEnabled="{Binding FilePathAssigned}"/>
+                <MenuItem Header="_Save As" Click="MenuItem_SaveAs_Click" />
             </MenuItem>
         </Menu>
 
-        <TextBox DockPanel.Dock="Top" Text="{Binding Filter}" />
+        <StackPanel DockPanel.Dock="Top" Margin="20 10 20 0">
+            <TextBlock Foreground="Gray">Filter</TextBlock>
+            <TextBox Text="{Binding Resource.Filter}" />
+        </StackPanel>
         
-        <DataGrid Margin="20" ItemsSource="{Binding Rows, Mode=TwoWay}" Name="Griddy"
+        <DataGrid Margin="20" ItemsSource="{Binding Resource.Rows, Mode=TwoWay}" Name="Griddy"
               AutoGenerateColumns="False" IsReadOnly="False"
               GridLinesVisibility="All" FrozenColumnCount="1"
-              CellEditEnded="DataGrid_CellEditEnded"
               BorderThickness="1" BorderBrush="Gray">
-            <DataGrid.Columns>
-                <!--<DataGridTemplateColumn Header="Row Index">
-                    <DataTemplate>
-                        <DataGridRowHeader>
-                            <TextBlock Text="lol"></TextBlock>
-                        </DataGridRowHeader>
-                    </DataTemplate>
-                    
-                    
-                </DataGridTemplateColumn>-->
-                <!--<DataGridTextColumn Header="Row Index" Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=Index}">
-                    
-                </DataGridTextColumn>-->
-                
+            <DataGrid.Styles>
+                <Style Selector="DataGridRow:nth-child(odd)">
+                    <Setter Property="Background" Value="#FAFAFA"/>
+                </Style>
+            </DataGrid.Styles>
+            <DataGrid.Columns>                
             </DataGrid.Columns>
         </DataGrid>
+
     </DockPanel>
 </Window>

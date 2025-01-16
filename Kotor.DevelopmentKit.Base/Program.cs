@@ -1,8 +1,7 @@
 ﻿using System;
 using Avalonia;
-using Avalonia.ReactiveUI;
 
-namespace KotorEditor2DA
+namespace Kotor.DevelopmentKit.Base
 {
     internal class Program
     {
@@ -18,7 +17,6 @@ namespace KotorEditor2DA
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .WithInterFont()
-                .LogToTrace()
-                .UseReactiveUI();
+                .LogToTrace();
     }
 }
