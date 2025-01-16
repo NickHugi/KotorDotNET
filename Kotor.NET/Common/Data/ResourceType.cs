@@ -76,9 +76,9 @@ public class ResourceType
         NDB, PTM, PTT, JPG, PNG, LYT, VIS, RIM, PTH, LIP, TPC, MDX, ERF, MP3
     };
 
-    public int ID { get; set; }
-    public string Extension { get; set; }
-    public string Category { get; set; }
+    public int ID { get; }
+    public string Extension { get; }
+    public string Category { get; }
 
     private ResourceType(int id, string extension, string category)
     {
