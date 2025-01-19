@@ -15,7 +15,7 @@ namespace Kotor.DevelopmentKit.Base
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new LoadFromERFWindow();
+                desktop.MainWindow = new LoadFromERFWindow(@"C:\Program Files (x86)\Steam\steamapps\common\swkotor\modules\danm13.rim");
             }
 
             base.OnFrameworkInitializationCompleted();

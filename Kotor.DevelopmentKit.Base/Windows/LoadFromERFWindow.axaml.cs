@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using DynamicData;
 using Kotor.DevelopmentKit.Base.ViewModels;
+using Kotor.NET.Common.Data;
 using Kotor.NET.Resources.KotorRIM;
 using Kotor.NET.Tests.Encapsulation;
 
@@ -15,11 +16,16 @@ public partial class LoadFromERFWindow : Window
 {
     private LoadFromERFWindowViewModel _model => (LoadFromERFWindowViewModel)DataContext!;
 
-    public LoadFromERFWindow()
+    public LoadFromERFWindow(string filepath, string defaultResRefFilter = "", ResourceType[] defaultTypeFilter = null)
     {
-        DataContext = new LoadFromERFWindowViewModel();
+        DataContext = new LoadFromERFWindowViewModel()
+        {
+            ResRefFilter = defaultResRefFilter,
+            TypeFilter = defaultTypeFilter,
+        };
+
         InitializeComponent();
-        LoadEncapsulatedData(@"C:\Program Files (x86)\Steam\steamapps\common\swkotor\modules\danm13.rim");
+        LoadEncapsulatedData(filepath);
     }
 
     public void LoadEncapsulatedData(string filepath)
@@ -33,5 +39,15 @@ public partial class LoadFromERFWindow : Window
             _ => throw new ArgumentException("The filepath loaded was not a valid RIM/ERF file.")
         };
         _model.LoadModel(encapsulator);
+    }
+
+    private void Button_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        Close(_model.SelectedItem);
+    }
+
+    private void Load_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        Close("abc");
     }
 }

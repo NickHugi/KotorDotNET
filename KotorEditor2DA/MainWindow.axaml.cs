@@ -13,7 +13,10 @@ using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Platform.Storage;
+using Kotor.DevelopmentKit.Base;
 using Kotor.DevelopmentKit.Base.Common;
+using Kotor.DevelopmentKit.Base.ViewModels;
+using Kotor.NET.Common.Data;
 using Kotor.NET.Formats.Binary2DA.Serialisation;
 using Kotor.NET.Resources.Kotor2DA;
 using Tmds.DBus.Protocol;
@@ -84,10 +87,23 @@ public partial class MainWindow : Window
         {
             Title = "Open 2DA File",
             AllowMultiple = false,
-            FileTypeFilter = [FilePickerTypes.TwoDA],
+            FileTypeFilter = [FilePickerTypes.TwoDA, FilePickerTypes.Encapsulator],
         });
 
-        if (files.Count ==  1)
+        var file = files.FirstOrDefault();
+
+        if (file is null)
+        {
+
+        }
+        else if (file.Path.AbsolutePath.EndsWith(".rim"))
+        {
+            var encapsulatorPicker = new LoadFromERFWindow(file.Path.LocalPath, defaultTypeFilter: [ResourceType.TWODA]);
+            var resource = await encapsulatorPicker.ShowDialog<ResourceViewModel>(this);
+
+            Model.LoadFr
+        }
+        else if (files.Count ==  1)
         {
             Model.LoadFromFile(files[0].Path.AbsolutePath);
         }

@@ -2,16 +2,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="200"
+        Width="350" Height="400"
         xmlns:vm="using:Kotor.DevelopmentKit.Base.ViewModels"
         x:DataType="vm:LoadFromERFWindowViewModel"
         x:Class="Kotor.DevelopmentKit.Base.LoadFromERFWindow"
         Title="LoadFromERFWindow">
-    <StackPanel Spacing="10" Margin="20">
-        <DataGrid ItemsSource="{Binding Resources}"
-                      AutoGenerateColumns="False" IsReadOnly="True"
-                      GridLinesVisibility="All" FrozenColumnCount="1"
-                      BorderThickness="1" BorderBrush="Gray">
+    <Grid RowDefinitions="*, 10, 25, 10, 35" Margin="10">
+        
+        <DataGrid Grid.Row="0"
+                    ItemsSource="{Binding Resources}" SelectedItem="{Binding SelectedItem}"
+                    AutoGenerateColumns="False" IsReadOnly="True"
+                    GridLinesVisibility="All" FrozenColumnCount="1"
+                    BorderThickness="1" BorderBrush="Gray">
             <DataGrid.Styles>
                 <Style Selector="DataGridRow:nth-child(odd)">
                     <Setter Property="Background" Value="#FAFAFA"/>
@@ -23,10 +26,12 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Orientation="Horizontal" Spacing="10">
-            <Button>Cancel</Button>
-            <Button>Load</Button>
+        <TextBox Grid.Row="2" Text="{Binding ResRefFilter, Mode=TwoWay}" Height="20" />
+        
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="10">
+            <Button Click="Button_Click">Cancel</Button>
+            <Button Click="Load_Click">Load</Button>
         </StackPanel>
 
-    </StackPanel>
+    </Grid>
 </Window>

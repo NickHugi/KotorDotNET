@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kotor.NET.Common.Data;
 using Kotor.NET.Resources.Kotor2DA;
 using ReactiveUI;
 
@@ -18,6 +19,20 @@ public abstract class ResourceEditorViewModelBase<T, U> : ReactiveObject where U
     }
     public bool FilePathAssigned => FilePath is not null;
 
+    private string _resref;
+    public string ResRef
+    {
+        get => _resref;
+        set => this.RaiseAndSetIfChanged(ref _resref, value);
+    }
+
+    private ResourceType _resourceType;
+    public ResourceType ResourceType
+    {
+        get => _resourceType;
+        set => this.RaiseAndSetIfChanged(ref _resourceType, value);
+    }
+
     private T _resource;
     public T Resource
     {
@@ -31,9 +46,11 @@ public abstract class ResourceEditorViewModelBase<T, U> : ReactiveObject where U
         LoadModel(new());
     }
 
-    public void LoadFromFile(string filepath)
+    public void LoadFromFile(string filepath, ResRef resref, ResourceType resourceType)
     {
         FilePath = filepath;
+        ResRef = resref.Get();
+        ResourceType = resourceType;
         LoadFromFile();
     }
     public abstract void LoadFromFile();

@@ -9,6 +9,7 @@ using DynamicData;
 using Kotor.DevelopmentKit.Base.ViewModels;
 using Kotor.NET.Formats.Binary2DA.Serialisation;
 using Kotor.NET.Resources.Kotor2DA;
+using Kotor.NET.Tests.Encapsulation;
 using ReactiveUI;
 
 namespace Kotor.DevelopmentKit.Editor2DA;
@@ -23,12 +24,21 @@ public class TwoDAResourceEditorViewModel : ResourceEditorViewModelBase<TwoDAVie
     public override void LoadFromFile()
     {
         var twoda = TwoDA.FromFile(FilePath);
-        LoadModel(twoda);
+
+        if (FilePath.ToLower().EndsWith("*.rim"))
+        {
+            var encapsulator = new IEncapsulatedFormat
+        }
+        else
+        {
+            LoadModel(twoda);
+        }
     }
 
     public override void SaveToFile()
     {
         var twoda = BuildModel();
+
         using var fileStream = File.OpenWrite(FilePath);
         new TwoDABinarySerializer(twoda).Serialize().Write(fileStream);
     }
