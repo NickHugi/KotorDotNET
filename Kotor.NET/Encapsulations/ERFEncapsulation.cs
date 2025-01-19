@@ -7,18 +7,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Kotor.NET.Common.Data;
 using Kotor.NET.Formats.BinaryERF;
-using Kotor.NET.Formats.BinaryRIM;
 
 namespace Kotor.NET.Tests.Encapsulation;
 
-public class RIMEncapsulation : IEncapsulatedFormat
+public class ERFEncapsulation : IEncapsulation
 {
     public string Path { get; private set; }
     public int Count { get; private set; }
 
     private List<ResourceInfo> _resources;
 
-    public RIMEncapsulation(string filepath)
+    public ERFEncapsulation(string filepath)
     {
         Path = filepath;
         _resources = default!;
@@ -28,18 +27,19 @@ public class RIMEncapsulation : IEncapsulatedFormat
 
     public void Reload()
     {
-        using var stream = File.Open(Path, FileMode.Open, FileAccess.ReadWrite);
-        var binary = new RIMBinary(stream);
+        using var stream = File.OpenRead(Path);
+        var binary = new ERFBinary(stream);
 
         Count = binary.ResourceEntries.Count;
 
-        _resources = binary.ResourceEntries.Select((entry, index) => new ResourceInfo
+        var file = binary.ResourceEntries.ToList();
+        _resources = binary.KeyEntries.Select((key, index) => new ResourceInfo
         {
             FilePath = Path,
-            ResRef = entry.ResRef.Get(),
-            Type = ResourceType.ByID(entry.ResourceTypeID),
-            Offset = entry.Offset,
-            Size = entry.Size,
+            ResRef = key.ResRef.Get(),
+            Type = ResourceType.ByID((int)key.ResID),
+            Offset = file.ElementAt(index).Offset,
+            Size = file.ElementAt(index).Size,
         }).ToList();
     }
 
@@ -47,7 +47,7 @@ public class RIMEncapsulation : IEncapsulatedFormat
     {
         var resource = Find(resref, type);
 
-        using var stream = new BinaryReader(File.Open(Path, FileMode.Open, FileAccess.ReadWrite));
+        using var stream = new BinaryReader(File.OpenRead(Path));
         stream.BaseStream.Seek(resource.Offset, SeekOrigin.Begin);
         return stream.ReadBytes(resource.Size);
     }
@@ -55,13 +55,13 @@ public class RIMEncapsulation : IEncapsulatedFormat
     public void Write(string resref, ResourceType type, byte[] data)
     {
         using var stream = File.Open(Path, FileMode.Open, FileAccess.ReadWrite);
-        var binary = new RIMBinary(stream);
+        var binary = new ERFBinary(stream);
 
-        binary.ResourceEntries.Add(new()
+        binary.KeyEntries.Add(new()
         {
             ResRef = resref,
-            ResourceTypeID = type.ID,
-            ResourceID = binary.ResourceData.Count,
+            ResType = (ushort)type.ID,
+            ResID = (ushort)binary.ResourceData.Count,
         });
         binary.ResourceData.Add(data);
 

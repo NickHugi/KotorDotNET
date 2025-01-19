@@ -8,7 +8,7 @@ using Kotor.NET.Common.Data;
 
 namespace Kotor.NET.Tests.Encapsulation;
 
-public interface IEncapsulatedFormat : IEnumerable<ResourceInfo>
+public interface IEncapsulation : IEnumerable<ResourceInfo>
 {
     /// <summary>
     /// Path to where the resources are being stored.
