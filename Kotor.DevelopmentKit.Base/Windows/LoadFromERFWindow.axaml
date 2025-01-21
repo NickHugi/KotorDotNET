@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="200"
+        mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="400"
         Width="350" Height="400"
         xmlns:vm="using:Kotor.DevelopmentKit.Base.ViewModels"
         x:DataType="vm:LoadFromERFWindowViewModel"
@@ -29,7 +29,7 @@
         <TextBox Grid.Row="2" Text="{Binding ResRefFilter, Mode=TwoWay}" Height="20" />
         
         <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="10">
-            <Button Click="Button_Click">Cancel</Button>
+            <Button Click="Cancel_Click">Cancel</Button>
             <Button Click="Load_Click">Load</Button>
         </StackPanel>
 

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Avalonia.ReactiveUI;
 using DynamicData;
 using Kotor.NET.Common.Data;
+using Kotor.NET.Encapsulations;
 using Kotor.NET.Tests.Encapsulation;
 using ReactiveUI;
 
@@ -15,37 +16,37 @@ namespace Kotor.DevelopmentKit.Base.ViewModels;
 
 public class LoadFromERFWindowViewModel : ReactiveObject
 {
-    private IEncapsulatedFormat Encapsulator { get; private set; }
+    public IEncapsulation Encapsulator { get; }
 
     private SourceList<ResourceViewModel> _resourcesSource = new();
     private readonly ReadOnlyObservableCollection<ResourceViewModel> _resources;
     public ReadOnlyObservableCollection<ResourceViewModel> Resources => _resources;
 
-    private ResourceViewModel _selectedItem;
-    public ResourceViewModel SelectedItem
+    private ResourceViewModel? _selectedItem = null;
+    public ResourceViewModel? SelectedItem
     {
         get => _selectedItem;
         set => this.RaiseAndSetIfChanged(ref _selectedItem, value);
     }
 
-    public string _resrefFilter;
+    public string _resrefFilter = "";
     public string ResRefFilter
     {
         get => _resrefFilter;
         set => this.RaiseAndSetIfChanged(ref _resrefFilter, value);
     }
 
-    public ResourceType[] _typeFilter;
-    public ResourceType[] TypeFilter
+    public ResourceType[]? _typeFilter = null;
+    public ResourceType[]? ResourceTypeFilter
     {
         get => _typeFilter;
         set => this.RaiseAndSetIfChanged(ref _typeFilter, value);
     }
 
-    public LoadFromERFWindowViewModel()
+    public LoadFromERFWindowViewModel(IEncapsulation encapsulator)
     {
-        _resrefFilter = "";
-        _resourcesSource = new();
+        Encapsulator = encapsulator;
+
         _resourcesSource.Connect()
             .ObserveOn(AvaloniaScheduler.Instance)
             .AutoRefreshOnObservable(x => this.ObservableForProperty(x => x.ResRefFilter))
@@ -53,14 +54,8 @@ public class LoadFromERFWindowViewModel : ReactiveObject
             .Filter(resource => (_typeFilter is not null) ? _typeFilter.Contains(resource.Type) : true)
             .Bind(out _resources)
             .Subscribe();
-    }
 
-    public void LoadModel(IEncapsulatedFormat encapsulator)
-    {
-        Encapsulator = encapsulator;
-
-        _resourcesSource.Clear();
-        _resourcesSource.AddRange(encapsulator.Select(x => new ResourceViewModel
+        _resourcesSource.AddRange(Encapsulator.Select(x => new ResourceViewModel
         {
             Filepath = x.FilePath,
             ResRef = x.ResRef,

@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace KotorEditor2DA
+namespace Kotor.DevelopmentKit.Editor2DA
 {
     internal class Program
     {

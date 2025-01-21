@@ -1,6 +1,8 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Kotor.DevelopmentKit.Base.ViewModels;
+using Kotor.NET.Encapsulations;
 
 namespace Kotor.DevelopmentKit.Base
 {
@@ -15,8 +17,11 @@ namespace Kotor.DevelopmentKit.Base
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new LoadFromERFWindow(@"C:\Program Files (x86)\Steam\steamapps\common\swkotor\modules\danm13.rim");
-            }
+                desktop.MainWindow = new LoadFromERFWindow()
+                {
+                    DataContext = Encapsulation.LoadFromPath(@"C:\Program Files (x86)\Steam\steamapps\common\swkotor\modules\danm13.rim")
+                };
+            };
 
             base.OnFrameworkInitializationCompleted();
         }

@@ -7,11 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia.ReactiveUI;
 using DynamicData;
+using Kotor.DevelopmentKit.Base;
 using Kotor.NET.Resources.Kotor2DA;
-using KotorEditor2DA;
 using ReactiveUI;
 
-namespace Kotor.DevelopmentKit.Editor2DA;
+namespace Kotor.DevelopmentKit.Editor2DA.ViewModels;
 
 public class TwoDAViewModel : ReactiveObject
 {
@@ -41,7 +41,7 @@ public class TwoDAViewModel : ReactiveObject
             .ObserveOn(AvaloniaScheduler.Instance)
             .AutoRefreshOnObservable(x => this.ObservableForProperty(x => x.Filter))
             .Filter(row => row.Any(cell => cell.ToLower().Contains(Filter.ToLower())))
-            .Sort(new ListIndexComperer<List<string>>(_rowsSource))
+            .Sort(new SourceListIndexComperer<List<string>>(_rowsSource))
             .Bind(out _rows)
             .Subscribe();
 

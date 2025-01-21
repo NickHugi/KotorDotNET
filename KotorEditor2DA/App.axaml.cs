@@ -1,8 +1,10 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Kotor.DevelopmentKit.Editor2DA;
+using Kotor.DevelopmentKit.Editor2DA.ViewModels;
 
-namespace KotorEditor2DA
+namespace Kotor.DevelopmentKit.Editor2DA
 {
     public partial class App : Application
     {
@@ -15,7 +17,10 @@ namespace KotorEditor2DA
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow();
+                desktop.MainWindow = new MainWindow()
+                {
+                    DataContext = new TwoDAResourceEditorViewModel()
+                };
             }
 
             base.OnFrameworkInitializationCompleted();

@@ -3,10 +3,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        xmlns:vm="using:KotorEditor2DA"
-        x:DataType="vm:MainWindowViewModel"
-        x:Class="KotorEditor2DA.MainWindow"
-        Title="KotorEditor2DA">
+        xmlns:vm="using:Kotor.DevelopmentKit.Editor2DA.ViewModels"
+        x:DataType="vm:TwoDAResourceEditorViewModel"
+        x:Class="Kotor.DevelopmentKit.Editor2DA.MainWindow"
+        Title="KDK - 2DA Editor"
+        Loaded="Window_Loaded">
     <DockPanel>
         <Menu DockPanel.Dock="Top" BorderThickness="0 0 0 1" BorderBrush="LightGray">
             <MenuItem Header="_File">

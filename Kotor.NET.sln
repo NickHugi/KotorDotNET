@@ -17,9 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Editor2DA", "Editor2DA", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kotor.DevelopmentKit.Editor2DA", "KotorEditor2DA\Kotor.DevelopmentKit.Editor2DA.csproj", "{D7FCF73A-9DC7-4224-AC64-BDD5CF40D5AA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kotor.DevelopmentKit.Base2", "Kotor.DevelopmentKit.Base2\Kotor.DevelopmentKit.Base2.csproj", "{036FD6CC-C269-4FC0-BBB8-07959F99D56B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kotor.DevelopmentKit.Base", "Kotor.DevelopmentKit.Base\Kotor.DevelopmentKit.Base.csproj", "{707B30C5-C7EB-460A-8F9F-B4794AF9D8A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kotor.DevelopmentKit.Base", "Kotor.DevelopmentKit.Base\Kotor.DevelopmentKit.Base.csproj", "{707B30C5-C7EB-460A-8F9F-B4794AF9D8A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +37,6 @@ Global
 		{D7FCF73A-9DC7-4224-AC64-BDD5CF40D5AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7FCF73A-9DC7-4224-AC64-BDD5CF40D5AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7FCF73A-9DC7-4224-AC64-BDD5CF40D5AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{036FD6CC-C269-4FC0-BBB8-07959F99D56B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{036FD6CC-C269-4FC0-BBB8-07959F99D56B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{036FD6CC-C269-4FC0-BBB8-07959F99D56B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{036FD6CC-C269-4FC0-BBB8-07959F99D56B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{707B30C5-C7EB-460A-8F9F-B4794AF9D8A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{707B30C5-C7EB-460A-8F9F-B4794AF9D8A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{707B30C5-C7EB-460A-8F9F-B4794AF9D8A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,7 +51,6 @@ Global
 		{739D01ED-DE35-4946-8809-424A58B8D01C} = {5A80EBC7-36DC-4E56-A52B-3C3547E0F912}
 		{9FD3D9DA-B1AC-4B0F-9144-E464D6A5FCD0} = {739D01ED-DE35-4946-8809-424A58B8D01C}
 		{D7FCF73A-9DC7-4224-AC64-BDD5CF40D5AA} = {9FD3D9DA-B1AC-4B0F-9144-E464D6A5FCD0}
-		{036FD6CC-C269-4FC0-BBB8-07959F99D56B} = {739D01ED-DE35-4946-8809-424A58B8D01C}
 		{707B30C5-C7EB-460A-8F9F-B4794AF9D8A9} = {739D01ED-DE35-4946-8809-424A58B8D01C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
