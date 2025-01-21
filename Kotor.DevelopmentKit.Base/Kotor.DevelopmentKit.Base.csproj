@@ -30,5 +30,8 @@
     <Compile Update="MainWindow.axaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
+    <Compile Update="Windows\SaveToERFWindow.axaml.cs">
+      <DependentUpon>SaveToERFWindow.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

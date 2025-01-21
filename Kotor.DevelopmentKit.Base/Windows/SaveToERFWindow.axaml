@@ -1,0 +1,24 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="400"
+        Width="350" Height="400"
+        xmlns:vm="using:Kotor.DevelopmentKit.Base.ViewModels"
+        xmlns:controls="using:Kotor.DevelopmentKit.Base.Controls"
+        x:DataType="vm:SaveToERFWindowViewModel"
+        x:Class="Kotor.DevelopmentKit.Base.Windows.SaveToERFWindow"
+        Title="SaveToERFWindow">
+    <Grid RowDefinitions="*, 10, 25, 10, 35" Margin="10">
+
+        <controls:ERFResourceList />
+
+        <TextBox Grid.Row="2" Text="{Binding ResRefFilter, Mode=TwoWay}" Height="20" />
+        
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="10">
+            <Button Click="Cancel_Click">Cancel</Button>
+            <Button Click="Save_Click">Save</Button>
+        </StackPanel>
+
+    </Grid>
+</Window>

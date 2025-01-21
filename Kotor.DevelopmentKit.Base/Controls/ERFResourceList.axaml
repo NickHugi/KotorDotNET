@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="using:Kotor.DevelopmentKit.Base.ViewModels"
+             x:DataType="vm:ERFResourceListViewModel"
+             x:Class="Kotor.DevelopmentKit.Base.Controls.ERFResourceList">
+    <DataGrid Grid.Row="0"
+                        ItemsSource="{Binding Resources}" SelectedItem="{Binding SelectedItem}"
+                        AutoGenerateColumns="False" IsReadOnly="True"
+                        GridLinesVisibility="All" FrozenColumnCount="1"
+                        BorderThickness="1" BorderBrush="Gray">
+        <DataGrid.Styles>
+            <Style Selector="DataGridRow:nth-child(odd)">
+                <Setter Property="Background" Value="#FAFAFA"/>
+            </Style>
+        </DataGrid.Styles>
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="ResRef" Binding="{Binding ResRef}" />
+            <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
+        </DataGrid.Columns>
+    </DataGrid>
+
+</UserControl>

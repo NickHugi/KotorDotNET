@@ -13,11 +13,11 @@ using Kotor.NET.Tests.Encapsulation;
 
 namespace Kotor.DevelopmentKit.Base.Windows;
 
-public partial class LoadFromERFWindow : Window
+public partial class SaveToERFWindow : Window
 {
-    public LoadFromERFWindowViewModel Context => (LoadFromERFWindowViewModel)DataContext!;
+    private SaveToERFWindowViewModel _model => (SaveToERFWindowViewModel)DataContext!;
 
-    public LoadFromERFWindow()
+    public SaveToERFWindow()
     {
         InitializeComponent();
     }
@@ -27,8 +27,8 @@ public partial class LoadFromERFWindow : Window
         Close(null);
     }
 
-    private void Load_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void Save_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        Close(Context.SelectedItem);
+        Close(_model.SelectedItem);
     }
 }

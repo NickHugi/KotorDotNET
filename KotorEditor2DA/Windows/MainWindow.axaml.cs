@@ -16,6 +16,7 @@ using Avalonia.Platform.Storage;
 using Kotor.DevelopmentKit.Base;
 using Kotor.DevelopmentKit.Base.Common;
 using Kotor.DevelopmentKit.Base.ViewModels;
+using Kotor.DevelopmentKit.Base.Windows;
 using Kotor.DevelopmentKit.Editor2DA;
 using Kotor.DevelopmentKit.Editor2DA.ViewModels;
 using Kotor.NET.Common.Data;
