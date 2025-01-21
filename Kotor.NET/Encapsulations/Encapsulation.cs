@@ -9,9 +9,11 @@ namespace Kotor.NET.Encapsulations;
 
 public static class Encapsulation
 {
+    private static string[] EncapsulationExtensions = [".erf", ".mod", ".rim"];
+
     public static IEncapsulation LoadFromPath(string path)
     {
-        var extension = Path.GetExtension(path.ToLower());
+        var extension = Path.GetExtension(path).ToLower();
 
         return extension switch
         {
@@ -20,5 +22,12 @@ public static class Encapsulation
             ".rim" => new RIMEncapsulation(path),
             _ => throw new ArgumentException() // TODO
         };
+    }
+
+    public static bool IsPathEncapsulation(string path)
+    {
+        var extension = Path.GetExtension(path).ToLower();
+
+        return EncapsulationExtensions.Contains(extension);
     }
 }
