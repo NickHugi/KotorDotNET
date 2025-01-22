@@ -11,9 +11,12 @@
         Title="SaveToERFWindow">
     <Grid RowDefinitions="*, 10, 25, 10, 35" Margin="10">
 
-        <controls:ERFResourceList />
+        <controls:ERFResourceList DataContext="{Binding ResourceList}" />
 
-        <TextBox Grid.Row="2" Text="{Binding ResRefFilter, Mode=TwoWay}" Height="20" />
+        <Grid Grid.Row="2" ColumnDefinitions="*, 100" >
+            <TextBox Grid.Column="0" Text="{Binding ResRef, Mode=TwoWay}" Margin="0 0 10 0" />
+            <ComboBox Grid.Column="1" ItemsSource="{Binding ResourceTypeOptions}" SelectedItem="{Binding ResourceType}" HorizontalAlignment="Stretch" Margin="0 0 0 6" />
+        </Grid>
         
         <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="10">
             <Button Click="Cancel_Click">Cancel</Button>

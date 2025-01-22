@@ -16,14 +16,14 @@ namespace Kotor.DevelopmentKit.Editor2DA.ViewModels;
 public class TwoDAViewModel : ReactiveObject
 {
 
-    private string _filter;
+    private string _filter = "";
     public string Filter
     {
         get => _filter;
         set => this.RaiseAndSetIfChanged(ref _filter, value);
     }
 
-    private ObservableCollection<string> _columns;
+    private ObservableCollection<string> _columns = [];
     public ObservableCollection<string> Columns
     {
         get => _columns;
@@ -37,11 +37,12 @@ public class TwoDAViewModel : ReactiveObject
     public TwoDAViewModel()
     {
         _rowsSource = new();
+        var sorter = new SourceListIndexComperer<List<string>>(_rowsSource);
         _rowsSource.Connect()
             .ObserveOn(AvaloniaScheduler.Instance)
             .AutoRefreshOnObservable(x => this.ObservableForProperty(x => x.Filter))
             .Filter(row => row.Any(cell => cell.ToLower().Contains(Filter.ToLower())))
-            .Sort(new SourceListIndexComperer<List<string>>(_rowsSource))
+            .Sort(sorter)
             .Bind(out _rows)
             .Subscribe();
 

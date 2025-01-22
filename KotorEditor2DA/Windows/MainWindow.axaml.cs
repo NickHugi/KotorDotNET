@@ -27,14 +27,57 @@ using Tmds.DBus.Protocol;
 
 namespace Kotor.DevelopmentKit.Editor2DA;
 
-public partial class MainWindow : Window
+public partial class MainWindow : ResourceEditorBase
 {
     public TwoDAResourceEditorViewModel Context => (TwoDAResourceEditorViewModel)DataContext!;
+
+    public override FilePickerOpenOptions FilePickerOpenOptions => new()
+    {
+        Title = "Open 2DA File",
+        AllowMultiple = false,
+        FileTypeFilter = [FilePickerTypes.TwoDA, FilePickerTypes.Encapsulator],
+    };
+    public override FilePickerSaveOptions FilePickerSaveOptions => new()
+    {
+        Title = "Save 2DA File",
+        ShowOverwritePrompt = false,
+        FileTypeChoices = [FilePickerTypes.TwoDA, FilePickerTypes.Encapsulator],
+    };
+    public override List<ResourceType> ResourceTypes => [ResourceType.TWODA];
+
 
     public MainWindow()
     {
         InitializeComponent();
     }
+
+
+    protected override void LoadFromFile()
+    {
+        Context.LoadFromFile();
+    }
+    protected override void LoadFromFile(string filepath)
+    {
+        Context.LoadFromFile(filepath);
+    }
+    protected override void LoadFromFile(string filepath, ResRef resref, ResourceType resourceType)
+    {
+        Context.LoadFromFile(filepath, resref, resourceType);
+    }
+
+    protected override void SaveToFile()
+    {
+        Context.SaveToFile();
+    }
+    protected override void SaveToFile(string filepath)
+    {
+        Context.SaveToFile(filepath);
+    }
+    protected override void SaveToFile(string filepath, ResRef resref, ResourceType resourceType)
+    {
+        Context.SaveToFile(filepath, resref, resourceType);
+    }
+
 
     private void RefreshColumns()
     {
@@ -79,6 +122,7 @@ public partial class MainWindow : Window
         };
     }
 
+
     private async void MenuItem_New_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         Context.NewFile();
@@ -86,35 +130,7 @@ public partial class MainWindow : Window
 
     private async void MenuItem_Open_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        var files = await TopLevel.GetTopLevel(this).StorageProvider.OpenFilePickerAsync(new()
-        {
-            Title = "Open 2DA File",
-            AllowMultiple = false,
-            FileTypeFilter = [FilePickerTypes.TwoDA, FilePickerTypes.Encapsulator],
-        });
-
-        var file = files.FirstOrDefault();
-
-        if (file is null)
-        {
-
-        }
-        else if (file.Path.AbsolutePath.EndsWith(".rim"))
-        {
-            var encapsulatorPicker = new LoadFromERFWindow()
-            {
-                DataContext = new LoadFromERFWindowViewModel(Encapsulation.LoadFromPath(file.Path.LocalPath))
-                {
-                    ResourceTypeFilter = [ResourceType.TWODA]
-                }
-            };
-            var resource = await encapsulatorPicker.ShowDialog<ResourceViewModel>(this);
-            Context.LoadFromFile(resource.Filepath, resource.ResRef, resource.Type);
-        }
-        else if (files.Count ==  1)
-        {
-            Context.LoadFromFile(files[0].Path.AbsolutePath);
-        }
+        OpenFileDialog();
     }
 
     private async void MenuItem_Save_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -124,16 +140,6 @@ public partial class MainWindow : Window
 
     private async void MenuItem_SaveAs_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        var file = await TopLevel.GetTopLevel(this).StorageProvider.SaveFilePickerAsync(new()
-        {
-            Title = "Save 2DA File",
-            ShowOverwritePrompt = true,
-            FileTypeChoices = [FilePickerTypes.TwoDA],
-        });
-
-        if (file is not null)
-        {
-            Context.SaveToFile(file.Path.AbsolutePath);
-        }
+        SaveFileDialog();
     }
 }

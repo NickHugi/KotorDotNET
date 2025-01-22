@@ -12,6 +12,7 @@ using Kotor.NET.Formats.Binary2DA.Serialisation;
 using Kotor.NET.Resources.Kotor2DA;
 using Kotor.NET.Tests.Encapsulation;
 using ReactiveUI;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Kotor.DevelopmentKit.Editor2DA.ViewModels;
 
@@ -22,26 +23,17 @@ public class TwoDAResourceEditorViewModel : ResourceEditorViewModelBase<TwoDAVie
         Resource = new();
     }
 
-    public override void LoadFromFile()
-    {
-        if (FilePath.ToLower().EndsWith(".rim"))
-        {
-            var capsule = Encapsulation.LoadFromPath(FilePath);
-            var data = capsule.Read(ResRef, ResourceType);
-            var twoda = TwoDA.FromBytes(data);
-            LoadModel(twoda);
-        }
-        else
-        {
-            var twoda = TwoDA.FromFile(FilePath);
-            LoadModel(twoda);
-        }
-    }
 
-    public override void SaveToFile()
+    public override byte[] SerializeModelToBytes()
     {
         var twoda = BuildModel();
-
+        using var memoryStream = new MemoryStream();
+        new TwoDABinarySerializer(twoda).Serialize().Write(memoryStream);
+        return memoryStream.ToArray();
+    }
+    public override void SerializeModelToFile()
+    {
+        var twoda = BuildModel();
         using var fileStream = File.OpenWrite(FilePath);
         new TwoDABinarySerializer(twoda).Serialize().Write(fileStream);
     }
@@ -54,5 +46,14 @@ public class TwoDAResourceEditorViewModel : ResourceEditorViewModelBase<TwoDAVie
     {
         Resource.Filter = "";
         Resource.Load(model);
+    }
+
+    public override TwoDA DeserializeModel(byte[] bytes)
+    {
+        return TwoDA.FromBytes(bytes);
+    }
+    public override TwoDA DeserializeModel(string path)
+    {
+        return TwoDA.FromFile(path);
     }
 }

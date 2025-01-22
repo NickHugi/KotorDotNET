@@ -17,8 +17,8 @@
             </Style>
         </DataGrid.Styles>
         <DataGrid.Columns>
-            <DataGridTextColumn Header="ResRef" Binding="{Binding ResRef}" />
-            <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
+            <DataGridTextColumn Header="ResRef" Width="*"  Binding="{Binding ResRef}" />
+            <DataGridTextColumn Header="Type" Width="Auto" Binding="{Binding Type}" />
         </DataGrid.Columns>
     </DataGrid>
 

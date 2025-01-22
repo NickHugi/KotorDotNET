@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kotor.NET.Common.Data;
+using Kotor.NET.Encapsulations;
+using Kotor.NET.Formats.Binary2DA.Serialisation;
 using Kotor.NET.Resources.Kotor2DA;
 using ReactiveUI;
 
@@ -61,15 +63,53 @@ public abstract class ResourceEditorViewModelBase<T, U> : ReactiveObject where U
         ResourceType = ResourceType.ByExtension(Path.GetExtension(filepath).Replace(".", ""));
         LoadFromFile();
     }
-    public abstract void LoadFromFile();
+    public void LoadFromFile()
+    {
+        if (Encapsulation.IsPathEncapsulation(FilePath))
+        {
+            var capsule = Encapsulation.LoadFromPath(FilePath);
+            var data = capsule.Read(ResRef, ResourceType);
+            var model = DeserializeModel(data);
+            LoadModel(model);
+        }
+        else
+        {
+            var twoda = DeserializeModel(FilePath);
+            LoadModel(twoda);
+        }
+    }
 
+    public void SaveToFile(string filepath, ResRef resref, ResourceType resourceType)
+    {
+        FilePath = filepath;
+        ResRef = resref.Get();
+        ResourceType = resourceType;
+        SaveToFile();
+    }
     public void SaveToFile(string filepath)
     {
         FilePath = filepath;
         SaveToFile();
     }
-    public abstract void SaveToFile();
+    public void SaveToFile()
+    {
+        if (Encapsulation.IsPathEncapsulation(FilePath!))
+        {
+            var capsule = Encapsulation.LoadFromPath(FilePath);
+            capsule.Write(ResRef, ResourceType, SerializeModelToBytes());
+        }
+        else
+        {
+            SerializeModelToFile();
+        }
+    }
 
     public abstract void LoadModel(U model);
     public abstract U BuildModel();
+
+    public abstract U DeserializeModel(byte[] bytes);
+    public abstract U DeserializeModel(string path);
+
+    public abstract byte[] SerializeModelToBytes();
+    public abstract void SerializeModelToFile();
 }
