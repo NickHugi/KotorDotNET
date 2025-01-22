@@ -27,7 +27,7 @@ using Tmds.DBus.Protocol;
 
 namespace Kotor.DevelopmentKit.Editor2DA;
 
-public partial class MainWindow : ResourceEditorBase
+public partial class TwoDAResourceEditor : ResourceEditorBase
 {
     public TwoDAResourceEditorViewModel Context => (TwoDAResourceEditorViewModel)DataContext!;
 
@@ -46,7 +46,7 @@ public partial class MainWindow : ResourceEditorBase
     public override List<ResourceType> ResourceTypes => [ResourceType.TWODA];
 
 
-    public MainWindow()
+    public TwoDAResourceEditor()
     {
         InitializeComponent();
     }

@@ -17,7 +17,7 @@ namespace Kotor.DevelopmentKit.Editor2DA
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow()
+                desktop.MainWindow = new TwoDAResourceEditor()
                 {
                     DataContext = new TwoDAResourceEditorViewModel()
                 };

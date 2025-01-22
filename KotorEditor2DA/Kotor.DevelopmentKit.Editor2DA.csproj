@@ -30,4 +30,10 @@
     <ProjectReference Include="..\Kotor.DevelopmentKit.Base\Kotor.DevelopmentKit.Base.csproj" />
     <ProjectReference Include="..\Kotor.NET\Kotor.NET.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Windows\TwoDAResourceEditor.axaml.cs">
+      <DependentUpon>TwoDAResourceEditor.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>
