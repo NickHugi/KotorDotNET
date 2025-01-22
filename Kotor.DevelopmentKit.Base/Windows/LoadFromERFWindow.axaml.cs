@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using DynamicData;
+using Kotor.DevelopmentKit.Base.DialogResults;
 using Kotor.DevelopmentKit.Base.ViewModels;
 using Kotor.NET.Common.Data;
 using Kotor.NET.Encapsulations;
@@ -29,6 +30,11 @@ public partial class LoadFromERFWindow : Window
 
     private void Load_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        Close(Context.SelectedItem);
+        Close(new LoadFromERFWindowDialogResult
+        {
+            FilePath = Context.SelectedItem.Filepath,
+            ResRef = Context.SelectedItem.ResRef,
+            ResourceType = Context.SelectedItem.Type,
+        });
     }
 }

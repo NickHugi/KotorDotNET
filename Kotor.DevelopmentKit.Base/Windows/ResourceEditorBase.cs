@@ -38,11 +38,11 @@ public abstract class ResourceEditorBase : Window
                     ResourceTypeFilter = ResourceTypes.ToArray()
                 }
             };
-            var resource = await encapsulatorPicker.ShowDialog<ResourceViewModel>(this);
+            var resource = await encapsulatorPicker.ShowDialog<LoadFromERFWindowDialogResult>(this);
 
             if (resource is not null)
             {
-                LoadFromFile(resource.Filepath, resource.ResRef, resource.Type);
+                LoadFromFile(resource.FilePath, resource.ResRef, resource.ResourceType);
             }
         }
         else
