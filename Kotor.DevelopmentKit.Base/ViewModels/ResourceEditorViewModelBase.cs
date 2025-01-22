@@ -43,6 +43,14 @@ public abstract class ResourceEditorViewModelBase<T, U> : ReactiveObject where U
         set => this.RaiseAndSetIfChanged(ref _resource, value);
     }
 
+
+    public ResourceEditorViewModelBase()
+    {
+        this.ObservableForProperty(x => x.FilePath)
+            .Subscribe(x => this.RaisePropertyChanged(nameof(FilePathAssigned)));
+    }
+
+
     public void NewFile()
     {
         FilePath = null;
