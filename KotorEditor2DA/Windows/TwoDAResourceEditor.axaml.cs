@@ -123,23 +123,28 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
     }
 
 
-    private async void MenuItem_New_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void MenuItem_New_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         Context.NewFile();
     }
 
-    private async void MenuItem_Open_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void MenuItem_Open_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         OpenFileDialog();
     }
 
-    private async void MenuItem_Save_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void MenuItem_Save_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         Context.SaveToFile();
     }
 
-    private async void MenuItem_SaveAs_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void MenuItem_SaveAs_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         SaveFileDialog();
+    }
+
+    private void MenuItem_Reset_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        Context.LoadFromFile();
     }
 }

@@ -15,6 +15,7 @@
                 <MenuItem Header="_Open" Click="MenuItem_Open_Click" />
                 <MenuItem Header="_Save" Click="MenuItem_Save_Click" IsEnabled="{Binding FilePathAssigned}"/>
                 <MenuItem Header="_Save As" Click="MenuItem_SaveAs_Click" />
+                <MenuItem Header="_Reset" Click="MenuItem_Reset_Click" IsEnabled="{Binding FilePathAssigned}" />
             </MenuItem>
         </Menu>
 
