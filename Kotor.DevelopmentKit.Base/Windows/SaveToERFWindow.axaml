@@ -9,13 +9,38 @@
         x:DataType="vm:SaveToERFWindowViewModel"
         x:Class="Kotor.DevelopmentKit.Base.Windows.SaveToERFWindow"
         Title="SaveToERFWindow">
-    <Grid RowDefinitions="*, 10, 25, 10, 35" Margin="10">
+    <Grid RowDefinitions="Auto, *, 40, 35" Margin="10">
+        
+        <ProgressBar
+            Grid.Row="0"
+            Margin="0 0 0 10"
+            IsVisible="{Binding ResourceList.Loading}"
+            IsIndeterminate="True"
+        />
 
-        <controls:ERFResourceList DataContext="{Binding ResourceList}" />
+        <controls:ERFResourceList
+            Grid.Row="1"
+            Margin="0 0 0 10"
+            DataContext="{Binding ResourceList}"
+        />
 
-        <Grid Grid.Row="2" ColumnDefinitions="*, 100" >
-            <TextBox Grid.Column="0" Text="{Binding ResRef, Mode=TwoWay}" Margin="0 0 10 0" />
-            <ComboBox Grid.Column="1" ItemsSource="{Binding ResourceTypeOptions}" SelectedItem="{Binding ResourceType}" HorizontalAlignment="Stretch" Margin="0 0 0 6" />
+        <Grid
+            Grid.Row="2"
+            Margin="0 0 0 10"
+            ColumnDefinitions="*, 100"
+        >
+            <TextBox
+                Grid.Column="0"
+                Margin="0 0 10 0"
+                Text="{Binding ResRef, Mode=TwoWay}"
+            />
+            <ComboBox
+                Grid.Column="1"
+                ItemsSource="{Binding ResourceTypeOptions}"
+                SelectedItem="{Binding ResourceType, Mode=TwoWay}"
+                HorizontalAlignment="Stretch"
+                Height="10"
+            />
         </Grid>
         
         <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="10">

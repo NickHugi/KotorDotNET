@@ -68,16 +68,18 @@ public class ERFResourceListViewModel : ReactiveObject
         _resourcesSource.Connect()
             .RefCount()
             .Filter(filter)
+            // todo - readd type filter
+            // todo - readd sorting
             .Bind(out _resources)
             .DisposeMany()
             .Subscribe();
     }
 
-    public ERFResourceListViewModel LoadModel(IEncapsulation encapsulator, IEnumerable<ResourceType> resourceTypeFilter)
+    public ERFResourceListViewModel LoadModel(IEncapsulation encapsulator, IEnumerable<ResourceType>? resourceTypeFilter)
     {
         Encapsulator = encapsulator;
 
-        _typeFilter = resourceTypeFilter.ToArray();
+        _typeFilter = resourceTypeFilter?.ToArray();
 
         _resourcesSource.Clear();
         _resourcesSource.AddRange(Encapsulator.Select(x => new ResourceViewModel

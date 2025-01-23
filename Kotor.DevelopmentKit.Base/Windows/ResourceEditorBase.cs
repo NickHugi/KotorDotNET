@@ -35,7 +35,6 @@ public abstract class ResourceEditorBase : Window
             encapsulatorPicker.DataContext = new LoadFromERFWindowViewModel().LoadModel(file.Path.LocalPath, ResourceTypes);
 
             var resource = await encapsulatorPicker.ShowDialog<LoadFromERFWindowDialogResult>(this);
-
             if (resource is not null)
             {
                 LoadFromFile(file.Path.LocalPath, resource.ResRef, resource.ResourceType);
@@ -57,12 +56,11 @@ public abstract class ResourceEditorBase : Window
         }
         else if (Encapsulation.IsPathEncapsulation(file.Path.LocalPath))
         {
-            var encapsulatorPicker = new SaveToERFWindow()
-            {
-                DataContext = new SaveToERFWindowViewModel(Encapsulation.LoadFromPath(file.Path.LocalPath), ResourceTypes)
-            };
-            var resource = await encapsulatorPicker.ShowDialog<SaveToERFWindowDialogResult>(this);
+            var encapsulatorPicker = new SaveToERFWindow();
+            encapsulatorPicker.DataContext = new SaveToERFWindowViewModel().LoadModel(file.Path.LocalPath, ResourceTypes);
 
+
+            var resource = await encapsulatorPicker.ShowDialog<SaveToERFWindowDialogResult>(this);
             if (resource is not null)
             {
                 SaveToFile(file.Path.LocalPath, resource.ResRef, resource.ResourceType);

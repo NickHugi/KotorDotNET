@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia.ReactiveUI;
 using Kotor.NET.Common.Data;
+using Kotor.NET.Encapsulations;
 using Kotor.NET.Tests.Encapsulation;
 using ReactiveUI;
 
@@ -36,20 +39,43 @@ public class SaveToERFWindowViewModel : ReactiveObject
     public ResourceType[] ResourceTypeOptions
     {
         get => _resourceTypeOptions;
-        init => this.RaiseAndSetIfChanged(ref _resourceTypeOptions, value);
+        private set => this.RaiseAndSetIfChanged(ref _resourceTypeOptions, value);
     }
 
-    public SaveToERFWindowViewModel(IEncapsulation encapsulator, IEnumerable<ResourceType> resourceTypeOptions)
+    public SaveToERFWindowViewModel()
     {
-        //ResourceList = new(encapsulator);
-        ResourceTypeOptions = resourceTypeOptions.ToArray();
-        ResRef = "";
-        ResourceType = _resourceTypeOptions.First();
-
         this.ObservableForProperty(x => x.ResRef)
-            .Subscribe(x => ResourceList.ResRefFilter = x.Value);
+            .Subscribe(x =>
+             {
+                 if (ResourceList is not null)
+                 {
+                     ResourceList.ResRefFilter = x.Value;
+                 }
+             });
 
         this.ObservableForProperty(x => x.ResourceType)
-            .Subscribe(x => ResourceList.ResourceTypeFilter = [x.Value]);
+            .Subscribe(x =>
+            {
+                if (ResourceList is not null)
+                {
+                    ResourceList.ResourceTypeFilter = [x.Value];
+                }
+            });
+    }
+
+    public SaveToERFWindowViewModel LoadModel(string filepath, IEnumerable<ResourceType> resourceTypeOptions)
+    {
+        ResourceTypeOptions = resourceTypeOptions.ToArray();
+        ResourceType = _resourceTypeOptions.First();
+        ResRef = "";
+        ResourceList = new();
+
+        Task.Run(() =>
+        {
+            var encapsulator = Encapsulation.LoadFromPath(filepath);
+            AvaloniaScheduler.Instance.Schedule(() => ResourceList.LoadModel(encapsulator, null));
+        });
+
+        return this;
     }
 }
