@@ -66,6 +66,7 @@ public class ResourceType
     public static ResourceType MDX = new ResourceType(3008, "mdx", "Models");
     public static ResourceType ERF = new ResourceType(9997, "erf", "Modules");
     public static ResourceType MP3 = new ResourceType(25014, "mp3", "Audio");
+    public static ResourceType KEY = new ResourceType(65000, "key", "Chitin");
 
     public static ResourceType[] All => _all;
     private static ResourceType[] _all = new[]
@@ -73,7 +74,8 @@ public class ResourceType
         BMP, TGA, WAV, PLT, INI, TXT, MDL, NSS, NCS, MOD, ARE, SET, IFO, WOK,
         TWODA, TLK, TXI, GIT, BTI, UTI, BTC, UTC, DLG, ITP ,UTT, DDS, UTS, LTR,
         GFF, FAC, UTE, UTD, UTP, DFT, GIC, GUI, UTM, DWK, PWK, JRL, UTW, SSF,
-        NDB, PTM, PTT, JPG, PNG, LYT, VIS, RIM, PTH, LIP, TPC, MDX, ERF, MP3
+        NDB, PTM, PTT, JPG, PNG, LYT, VIS, RIM, PTH, LIP, TPC, MDX, ERF, MP3,
+        KEY,
     };
 
     public int ID { get; }

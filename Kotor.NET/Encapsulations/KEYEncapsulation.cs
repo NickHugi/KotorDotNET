@@ -64,7 +64,7 @@ public class KEYEncapsulation : IEncapsulation
     {
         var resource = Find(resref, type);
 
-        using var stream = new BinaryReader(File.Open(Path, FileMode.Open, FileAccess.ReadWrite));
+        using var stream = new BinaryReader(File.Open(resource.FilePath, FileMode.Open, FileAccess.Read));
         stream.BaseStream.Seek(resource.Offset, SeekOrigin.Begin);
         return stream.ReadBytes(resource.Size);
     }
