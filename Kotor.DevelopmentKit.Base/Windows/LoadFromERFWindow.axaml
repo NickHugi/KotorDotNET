@@ -11,15 +11,33 @@
         Title="LoadFromERFWindow">
     <Grid RowDefinitions="Auto, *, 25, 35" Margin="10">
 
-        <ProgressBar Grid.Row="0" Margin="0 0 0 10" IsVisible="False" IsIndeterminate="True" />
+        <ProgressBar
+            Grid.Row="0"
+            Margin="0 0 0 10"
+            IsVisible="{Binding ResourceList.Loading}"
+            IsIndeterminate="True"
+        />
 
-        <controls:ERFResourceList DataContext="{Binding ResourceList}" Grid.Row="1" Margin="0 0 0 10" />
+        <controls:ERFResourceList
+            Grid.Row="1"
+            Margin="0 0 0 10"
+            DataContext="{Binding ResourceList}"
+        />
 
-        <TextBox Grid.Row="2" Text="{Binding ResourceList.ResRefFilter, Mode=TwoWay}" Height="20" Margin="0 0 0 10" />
+        <TextBox
+            Grid.Row="2"
+            Margin="0 0 0 10"
+            Text="{Binding ResourceList.ResRefFilter, Mode=TwoWay}"
+            Height="20"
+        />
         
-        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="10" Margin="0 0 0 10">
+        <StackPanel
+            Grid.Row="3"
+            Orientation="Horizontal"
+            Spacing="10"
+        >
             <Button Click="Cancel_Click">Cancel</Button>
-            <Button Click="Load_Click">Load</Button>
+            <Button Click="Load_Click" IsEnabled="{Binding !ResourceList.Loading}">Load</Button>
         </StackPanel>
         
     </Grid>

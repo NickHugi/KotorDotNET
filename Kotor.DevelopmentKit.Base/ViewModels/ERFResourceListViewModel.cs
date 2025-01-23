@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using DynamicData;
 using DynamicData.Binding;
@@ -47,10 +48,11 @@ public class ERFResourceListViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _typeFilter, value);
     }
 
-
-    public Func<ResourceViewModel, bool> CreatePredicate(string text)
+    private bool _loading = true;
+    public bool Loading
     {
-        return x => x.ResRef.Contains(ResRefFilter);
+        get => _loading;
+        set => this.RaiseAndSetIfChanged(ref _loading, value);
     }
 
     public ERFResourceListViewModel()
@@ -87,6 +89,13 @@ public class ERFResourceListViewModel : ReactiveObject
             Offset = x.Offset,
         }));
 
+        Loading = false;
+
         return this;
+    }
+
+    public Func<ResourceViewModel, bool> CreatePredicate(string text)
+    {
+        return x => string.IsNullOrEmpty(ResRefFilter) || x.ResRef.Contains(ResRefFilter);
     }
 }

@@ -6,11 +6,17 @@
              xmlns:vm="using:Kotor.DevelopmentKit.Base.ViewModels"
              x:DataType="vm:ERFResourceListViewModel"
              x:Class="Kotor.DevelopmentKit.Base.Controls.ERFResourceList">
-    <DataGrid Grid.Row="0"
-                        ItemsSource="{Binding Resources}" SelectedItem="{Binding SelectedItem}"
-                        AutoGenerateColumns="False" IsReadOnly="True"
-                        GridLinesVisibility="All" FrozenColumnCount="1"
-                        BorderThickness="1" BorderBrush="Gray">
+    <DataGrid
+        Grid.Row="0"
+        ItemsSource="{Binding Resources}"
+        SelectedItem="{Binding SelectedItem}"
+        AutoGenerateColumns="False"
+        IsReadOnly="True"
+        GridLinesVisibility="All"
+        FrozenColumnCount="1"
+        BorderThickness="1"
+        BorderBrush="Gray"
+    >
         <DataGrid.Styles>
             <Style Selector="DataGridRow:nth-child(odd)">
                 <Setter Property="Background" Value="#FAFAFA"/>

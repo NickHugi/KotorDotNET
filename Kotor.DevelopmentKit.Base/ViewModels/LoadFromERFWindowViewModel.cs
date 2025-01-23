@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,19 +28,16 @@ public class LoadFromERFWindowViewModel : ReactiveObject
     public LoadFromERFWindowViewModel()
     {
     }
-    public LoadFromERFWindowViewModel(IEncapsulation encapsulator, IEnumerable<ResourceType> resourceTypeFilter)
-    {
-        //ResourceList = new(encapsulator);
-        //ResourceList.ResourceTypeFilter = resourceTypeFilter.ToArray();
-    }
 
     public LoadFromERFWindowViewModel LoadModel(string filepath, IEnumerable<ResourceType> resourceTypeFilter)
     {
-        //Task.Run(() =>
-        //{
-            ResourceList = new();
-            ResourceList.LoadModel(Encapsulation.LoadFromPath(filepath), resourceTypeFilter);
-        //});
+        ResourceList = new();
+
+        Task.Run(() =>
+        {
+            var encapsulator = Encapsulation.LoadFromPath(filepath);
+            AvaloniaScheduler.Instance.Schedule(() => ResourceList.LoadModel(encapsulator, resourceTypeFilter));
+        });
 
         return this;
     }
