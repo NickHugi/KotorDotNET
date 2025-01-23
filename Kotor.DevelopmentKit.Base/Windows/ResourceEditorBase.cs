@@ -31,18 +31,14 @@ public abstract class ResourceEditorBase : Window
         }
         else if (Encapsulation.IsPathEncapsulation(file.Path.LocalPath))
         {
-            var encapsulatorPicker = new LoadFromERFWindow()
-            {
-                DataContext = new LoadFromERFWindowViewModel(Encapsulation.LoadFromPath(file.Path.LocalPath))
-                {
-                    ResourceTypeFilter = ResourceTypes.ToArray()
-                }
-            };
+            var encapsulatorPicker = new LoadFromERFWindow();
+            encapsulatorPicker.DataContext = new LoadFromERFWindowViewModel().LoadModel(file.Path.LocalPath, ResourceTypes);
+
             var resource = await encapsulatorPicker.ShowDialog<LoadFromERFWindowDialogResult>(this);
 
             if (resource is not null)
             {
-                LoadFromFile(resource.FilePath, resource.ResRef, resource.ResourceType);
+                LoadFromFile(file.Path.LocalPath, resource.ResRef, resource.ResourceType);
             }
         }
         else

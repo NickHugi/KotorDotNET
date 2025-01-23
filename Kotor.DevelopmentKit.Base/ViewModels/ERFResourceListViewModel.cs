@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.ReactiveUI;
 using DynamicData;
+using DynamicData.Binding;
 using Kotor.NET.Common.Data;
+using Kotor.NET.Encapsulations;
+using Kotor.NET.Extensions;
 using Kotor.NET.Tests.Encapsulation;
 using ReactiveUI;
 
@@ -15,7 +20,7 @@ namespace Kotor.DevelopmentKit.Base.ViewModels;
 
 public class ERFResourceListViewModel : ReactiveObject
 {
-    public IEncapsulation Encapsulator { get; }
+    public IEncapsulation Encapsulator { get; private set; }
 
     private SourceList<ResourceViewModel> _resourcesSource = new();
     private readonly ReadOnlyObservableCollection<ResourceViewModel> _resources;
@@ -42,18 +47,37 @@ public class ERFResourceListViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _typeFilter, value);
     }
 
-    public ERFResourceListViewModel(IEncapsulation encapsulator)
+
+    public Func<ResourceViewModel, bool> CreatePredicate(string text)
+    {
+        return x => x.ResRef.Contains(ResRefFilter);
+    }
+
+    public ERFResourceListViewModel()
+    {
+        Encapsulator = default!;
+        _resources = default!;
+
+        var filter = this.WhenValueChanged(x => x.ResRefFilter)
+            .Throttle(TimeSpan.FromMilliseconds(50), AvaloniaScheduler.Instance)
+            .DistinctUntilChanged()
+            .Select(CreatePredicate);
+
+        _resourcesSource.Connect()
+            .RefCount()
+            .Filter(filter)
+            .Bind(out _resources)
+            .DisposeMany()
+            .Subscribe();
+    }
+
+    public ERFResourceListViewModel LoadModel(IEncapsulation encapsulator, IEnumerable<ResourceType> resourceTypeFilter)
     {
         Encapsulator = encapsulator;
 
-        _resourcesSource.Connect()
-            .ObserveOn(AvaloniaScheduler.Instance)
-            .AutoRefreshOnObservable(x => this.ObservableForProperty(x => x.ResRefFilter))
-            .Filter(resource => resource.ResRef.ToLower().Contains(_resrefFilter.ToLower()))
-            .Filter(resource => (_typeFilter is not null) ? _typeFilter.Contains(resource.Type) : true)
-            .Bind(out _resources)
-            .Subscribe();
+        _typeFilter = resourceTypeFilter.ToArray();
 
+        _resourcesSource.Clear();
         _resourcesSource.AddRange(Encapsulator.Select(x => new ResourceViewModel
         {
             Filepath = x.FilePath,
@@ -62,5 +86,7 @@ public class ERFResourceListViewModel : ReactiveObject
             Size = x.Size,
             Offset = x.Offset,
         }));
+
+        return this;
     }
 }

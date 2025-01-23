@@ -41,7 +41,7 @@ public class SaveToERFWindowViewModel : ReactiveObject
 
     public SaveToERFWindowViewModel(IEncapsulation encapsulator, IEnumerable<ResourceType> resourceTypeOptions)
     {
-        ResourceList = new(encapsulator);
+        //ResourceList = new(encapsulator);
         ResourceTypeOptions = resourceTypeOptions.ToArray();
         ResRef = "";
         ResourceType = _resourceTypeOptions.First();

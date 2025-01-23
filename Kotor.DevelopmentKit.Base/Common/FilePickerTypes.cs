@@ -23,6 +23,6 @@ public static class FilePickerTypes
     };
     public static readonly FilePickerFileType Encapsulator = new FilePickerFileType("Encapsulated Resource")
     {
-        Patterns = ["*.erf", "*.mod", "*.rim"],
+        Patterns = ["*.erf", "*.mod", "*.rim", "*.key"],
     };
 }

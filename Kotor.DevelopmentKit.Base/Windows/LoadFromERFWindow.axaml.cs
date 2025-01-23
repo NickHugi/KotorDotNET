@@ -32,9 +32,9 @@ public partial class LoadFromERFWindow : Window
     {
         Close(new LoadFromERFWindowDialogResult
         {
-            FilePath = Context.SelectedItem.Filepath,
-            ResRef = Context.SelectedItem.ResRef,
-            ResourceType = Context.SelectedItem.Type,
+            FilePath = Context.ResourceList.SelectedItem.Filepath,
+            ResRef = Context.ResourceList.SelectedItem.ResRef,
+            ResourceType = Context.ResourceList.SelectedItem.Type,
         });
     }
 }

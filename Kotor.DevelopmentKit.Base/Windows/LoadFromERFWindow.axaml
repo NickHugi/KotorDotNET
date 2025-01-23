@@ -4,21 +4,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="400"
         Width="350" Height="400"
-        xmlns:vm="using:Kotor.DevelopmentKit.Base.ViewModels"        xmlns:controls="using:Kotor.DevelopmentKit.Base.Controls"
+        xmlns:vm="using:Kotor.DevelopmentKit.Base.ViewModels"
+        xmlns:controls="using:Kotor.DevelopmentKit.Base.Controls"
         x:DataType="vm:LoadFromERFWindowViewModel"
         x:Class="Kotor.DevelopmentKit.Base.Windows.LoadFromERFWindow"
         Title="LoadFromERFWindow">
-    <Grid RowDefinitions="*, 10, 25, 10, 35" Margin="10">
+    <Grid RowDefinitions="Auto, *, 25, 35" Margin="10">
 
-        <controls:ERFResourceList />
+        <ProgressBar Grid.Row="0" Margin="0 0 0 10" IsVisible="False" IsIndeterminate="True" />
 
-        <TextBox Grid.Row="2" Text="{Binding ResRefFilter, Mode=TwoWay}" Height="20" />
+        <controls:ERFResourceList DataContext="{Binding ResourceList}" Grid.Row="1" Margin="0 0 0 10" />
+
+        <TextBox Grid.Row="2" Text="{Binding ResourceList.ResRefFilter, Mode=TwoWay}" Height="20" Margin="0 0 0 10" />
         
-        <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="10">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="10" Margin="0 0 0 10">
             <Button Click="Cancel_Click">Cancel</Button>
             <Button Click="Load_Click">Load</Button>
         </StackPanel>
-
-    
-</Grid>
+        
+    </Grid>
 </Window>

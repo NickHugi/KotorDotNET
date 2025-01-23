@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Kotor.DevelopmentKit.Base2\Kotor.DevelopmentKit.Base.csproj" />
     <ProjectReference Include="..\Kotor.DevelopmentKit.Base\Kotor.DevelopmentKit.Base.csproj" />
     <ProjectReference Include="..\Kotor.NET\Kotor.NET.csproj" />
   </ItemGroup>
