@@ -14,13 +14,35 @@ namespace Kotor.DevelopmentKit.Base.ViewModels;
 
 public abstract class ResourceEditorViewModelBase<T, U> : ReactiveObject where U : new()
 {
+    public virtual string WindowTitle
+    {
+        get
+        {
+            if (FilePath is null)
+            {
+                return "";
+            }
+            else if (Encapsulation.IsPathEncapsulatedInFile(FilePath))
+            {
+                var encapsulatorName = FilePath.Split(Path.DirectorySeparatorChar).Last();
+                return $"{encapsulatorName}/{ResourceFilename}";
+            }
+            else
+            {
+                var lastDirectory = Path.GetDirectoryName(FilePath).Split(Path.DirectorySeparatorChar).Last();
+                return $"{lastDirectory}/{ResourceFilename}";
+            }
+        }
+    }
+    public string ResourceFilename => (ResRef is null || ResourceType is null) ? Path.GetFileName(FilePath) : $"{ResRef}.{ResourceType.Extension}";
+    public bool FilePathAssigned => FilePath is not null;
+
     private string? _filepath = default!;
     public string? FilePath
     {
         get => _filepath;
         set => this.RaiseAndSetIfChanged(ref _filepath, value);
     }
-    public bool FilePathAssigned => FilePath is not null;
 
     private string _resref = default!;
     public string ResRef
@@ -48,6 +70,9 @@ public abstract class ResourceEditorViewModelBase<T, U> : ReactiveObject where U
     {
         this.ObservableForProperty(x => x.FilePath)
             .Subscribe(x => this.RaisePropertyChanged(nameof(FilePathAssigned)));
+
+        this.WhenAnyValue(x => x.ResRef, x => x.ResourceType, x => x.FilePath)
+            .Subscribe(x => this.RaisePropertyChanged(nameof(WindowTitle)));
     }
 
 

@@ -32,4 +32,10 @@ public static class Encapsulation
 
         return EncapsulationExtensions.Contains(extension);
     }
+
+    public static bool IsPathEncapsulatedInFile(string path)
+    {
+        var extension = Path.GetExtension(path).ToLower();
+        return EncapsulationExtensions.Contains(extension);
+    }
 }

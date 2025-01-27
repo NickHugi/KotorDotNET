@@ -7,7 +7,7 @@
         xmlns:vm="using:Kotor.DevelopmentKit.Editor2DA.ViewModels"
         x:DataType="vm:TwoDAResourceEditorViewModel"
         x:Class="Kotor.DevelopmentKit.Editor2DA.TwoDAResourceEditor"
-        Title="KDK - 2DA Editor"
+        Title="{Binding WindowTitle}"
         Loaded="Window_Loaded">
     <DockPanel>
         <Menu DockPanel.Dock="Top" BorderThickness="0 0 0 1" BorderBrush="LightGray">
@@ -25,15 +25,25 @@
             <TextBox Text="{Binding Resource.Filter}" />
         </StackPanel>
         
-        <DataGrid Margin="20" ItemsSource="{Binding Resource.Rows, Mode=TwoWay}" Name="Griddy"
-              AutoGenerateColumns="False" IsReadOnly="False"
-              GridLinesVisibility="All" FrozenColumnCount="1"
-              BorderThickness="1" BorderBrush="Gray">
+        <DataGrid
+            Margin="20"
+            ItemsSource="{Binding Resource.Rows, Mode=TwoWay}"
+            Name="Griddy"
+            AutoGenerateColumns="False"
+            IsReadOnly="False"
+            GridLinesVisibility="All"
+            FrozenColumnCount="1"
+            BorderThickness="1"
+            BorderBrush="Gray"
+            ClipboardCopyMode="None"
+            KeyUp="DataGrid_KeyUp"
+        >
             <DataGrid.Styles>
                 <Style Selector="DataGridRow:nth-child(odd)">
                     <Setter Property="Background" Value="#FAFAFA"/>
                 </Style>
             </DataGrid.Styles>
+            
             <DataGrid.Columns>                
             </DataGrid.Columns>
         </DataGrid>

@@ -80,4 +80,18 @@ public class TwoDAViewModel : ReactiveObject
 
         return twoda;
     }
+
+
+    public void SetCellText(int rowIndex, string columnName, string value)
+    {
+        var columnIndex = Columns.IndexOf(columnName);
+
+        _rowsSource.Edit(rows =>
+        {
+            var row = rows[rowIndex];
+            rows.RemoveAt(rowIndex);
+            row[columnIndex] = value;
+            rows.Insert(rowIndex, row);
+        });
+    }
 }

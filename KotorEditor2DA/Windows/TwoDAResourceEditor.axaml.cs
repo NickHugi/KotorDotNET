@@ -6,11 +6,13 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Platform.Storage;
 using Kotor.DevelopmentKit.Base;
@@ -83,22 +85,6 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
     {
         Griddy.Columns.Clear();
 
-        Griddy.Columns.Add(new DataGridTemplateColumn()
-        {
-            CellTemplate = new FuncDataTemplate<object>((value, namescope) =>
-            {
-                return new TextBlock
-                {
-                    //[!TextBlock.TextProperty] = new Binding
-                    //{
-                    //    Path = "Index",
-                    //    RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor) {  AncestorType = typeof(DataGridRow)},
-                    //}
-                };
-            }),
-            Width = DataGridLength.SizeToCells
-        });
-
         for (int i = 0; i < Context.Resource.Columns.Count(); i++)
         {
             var column = Context.Resource.Columns.ElementAt(i);
@@ -111,9 +97,33 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
             });
         }
     }
+
+    private async Task CopySelectedCellToClipboard()
+    {
+        var rowIndex = Griddy.SelectedIndex;
+        var columnHeader = (string)Griddy.CurrentColumn.Header;
+        var columnIndex = Context.Resource.Columns.IndexOf(columnHeader);
+        var text = Context.Resource.Rows[rowIndex][columnIndex];
+        await Clipboard.SetTextAsync(text);
+
+        Context.Resource.SetCellText(1, "", "berp");
+    }
+    private async Task PasteClipboardToSelectedCell()
+    {
+        var text = await Clipboard.GetTextAsync();
+        var rowIndex = Griddy.SelectedIndex;
+        var columnHeader = (string)Griddy.CurrentColumn.Header;
+        Context.Resource.SetCellText(rowIndex, columnHeader, text);
+        //var columnIndex = Context.Resource.Columns.IndexOf(columnHeader);
+        //Context.Resource.Rows[rowIndex][columnIndex] = text;
+    }
+
     
     private void Window_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        if (Design.IsDesignMode)
+            return;
+
         RefreshColumns();
         Context.Resource.PropertyChanged += (sender, args) =>
         {
@@ -121,7 +131,6 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
                 RefreshColumns();
         };
     }
-
 
     private void MenuItem_New_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
@@ -146,5 +155,20 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
     private void MenuItem_Reset_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         Context.LoadFromFile();
+    }
+
+    private async void DataGrid_KeyUp(object? sender, Avalonia.Input.KeyEventArgs e)
+    {
+        if (e.KeyModifiers == KeyModifiers.Control)
+        {
+            if (e.Key == Key.C)
+            {
+                await CopySelectedCellToClipboard();
+            }
+            else if (e.Key == Key.V)
+            {
+                await PasteClipboardToSelectedCell();
+            }
+        }
     }
 }
