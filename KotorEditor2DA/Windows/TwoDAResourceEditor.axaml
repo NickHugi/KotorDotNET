@@ -36,7 +36,7 @@
         <DataGrid
             Margin="20"
             ItemsSource="{Binding Resource.Rows, Mode=TwoWay}"
-            Name="Griddy"
+            Name="TwodaDataGrid"
             AutoGenerateColumns="False"
             IsReadOnly="False"
             GridLinesVisibility="All"

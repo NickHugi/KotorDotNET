@@ -84,13 +84,13 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
 
     private void RefreshColumns()
     {
-        Griddy.Columns.Clear();
+        TwodaDataGrid.Columns.Clear();
 
         for (int i = 0; i < Context.Resource.Columns.Count(); i++)
         {
             var column = Context.Resource.Columns.ElementAt(i);
 
-            Griddy.Columns.Add(new DataGridTextColumn()
+            TwodaDataGrid.Columns.Add(new DataGridTextColumn()
             {
                 Header = column,
                 Binding = new Binding($"[{i}]"),
@@ -104,8 +104,8 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         if (Clipboard is null)
             return;
 
-        var rowIndex = Griddy.SelectedIndex;
-        var columnHeader = (string)Griddy.CurrentColumn.Header;
+        var rowIndex = TwodaDataGrid.SelectedIndex;
+        var columnHeader = (string)TwodaDataGrid.CurrentColumn.Header;
         var columnIndex = Context.Resource.Columns.IndexOf(columnHeader);
         var text = Context.Resource.Rows[rowIndex][columnIndex];
         await Clipboard.SetTextAsync(text);
@@ -116,9 +116,9 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         if (Clipboard is null)
             return;
 
-        var text = await Clipboard.GetTextAsync();
-        var rowIndex = Griddy.SelectedIndex;
-        var columnHeader = (string)Griddy.CurrentColumn.Header;
+        var text = await Clipboard.GetTextAsync() ?? "";
+        var rowIndex = TwodaDataGrid.SelectedIndex;
+        var columnHeader = (string)TwodaDataGrid.CurrentColumn.Header;
         Context.Resource.SetCellText(rowIndex, columnHeader, text);
     }
 
@@ -173,7 +173,7 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
 
     private void MenuItem_Reset_Sorting(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        Griddy.Columns.ToList().ForEach(x => x.ClearSort());
+        TwodaDataGrid.Columns.ToList().ForEach(x => x.ClearSort());
     }
 
     private void MenuItem_Toggle_Filter(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
