@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data.Common;
 using System.Globalization;
 using System.Linq;
@@ -172,7 +173,7 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
 
     private void MenuItem_Reset_Sorting(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        RefreshColumns();
+        Griddy.Columns.ToList().ForEach(x => x.ClearSort());
     }
 
     private void MenuItem_Toggle_Filter(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
