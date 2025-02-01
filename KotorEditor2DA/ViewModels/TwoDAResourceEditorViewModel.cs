@@ -20,6 +20,13 @@ public class TwoDAResourceEditorViewModel : ResourceEditorViewModelBase<TwoDAVie
 {
     public override string WindowTitle => "KDK - 2DA Editor - " + base.WindowTitle;
 
+    private bool _showFilter;
+    public bool ShowFilter
+    {
+        get => _showFilter;
+        set => this.RaiseAndSetIfChanged(ref _showFilter, value);
+    }
+
 
     public TwoDAResourceEditorViewModel()
     {
@@ -58,5 +65,11 @@ public class TwoDAResourceEditorViewModel : ResourceEditorViewModelBase<TwoDAVie
     public override TwoDA DeserializeModel(string path)
     {
         return TwoDA.FromFile(path);
+    }
+
+
+    public void ToggleFilter()
+    {
+        ShowFilter = !ShowFilter;
     }
 }

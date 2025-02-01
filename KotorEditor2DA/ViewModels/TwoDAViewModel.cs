@@ -88,10 +88,30 @@ public class TwoDAViewModel : ReactiveObject
 
         _rowsSource.Edit(rows =>
         {
-            var row = rows[rowIndex];
-            rows.RemoveAt(rowIndex);
+            var row = rows[rowIndex].ToList();
             row[columnIndex] = value;
-            rows.Insert(rowIndex, row);
+            rows.Replace(rows[rowIndex], row);
+        });
+    }
+
+    public void AddRow()
+    {
+        _rowsSource.Edit(rows =>
+        {
+            rows.Add([rows.Count.ToString(), .. Columns.Select(x => "")]);
+        });
+    }
+
+    public void ResetRowLabels()
+    {
+        _rowsSource.Edit(rows =>
+        {
+            for (int i = 0; i < rows.Count; i++)
+            {
+                var row = rows[i].ToList();
+                row[0] = i.ToString();
+                rows.Replace(rows[i], row);
+            }
         });
     }
 }

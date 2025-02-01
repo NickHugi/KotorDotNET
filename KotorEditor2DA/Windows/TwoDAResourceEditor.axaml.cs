@@ -100,22 +100,25 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
 
     private async Task CopySelectedCellToClipboard()
     {
+        if (Clipboard is null)
+            return;
+
         var rowIndex = Griddy.SelectedIndex;
         var columnHeader = (string)Griddy.CurrentColumn.Header;
         var columnIndex = Context.Resource.Columns.IndexOf(columnHeader);
         var text = Context.Resource.Rows[rowIndex][columnIndex];
         await Clipboard.SetTextAsync(text);
-
-        Context.Resource.SetCellText(1, "", "berp");
     }
+
     private async Task PasteClipboardToSelectedCell()
     {
+        if (Clipboard is null)
+            return;
+
         var text = await Clipboard.GetTextAsync();
         var rowIndex = Griddy.SelectedIndex;
         var columnHeader = (string)Griddy.CurrentColumn.Header;
         Context.Resource.SetCellText(rowIndex, columnHeader, text);
-        //var columnIndex = Context.Resource.Columns.IndexOf(columnHeader);
-        //Context.Resource.Rows[rowIndex][columnIndex] = text;
     }
 
     
@@ -155,6 +158,26 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
     private void MenuItem_Reset_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         Context.LoadFromFile();
+    }
+
+    private void MenuItem_Add_Row(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        Context.Resource.AddRow();
+    }
+
+    private void MenuItem_Reset_Row_Headers(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        Context.Resource.ResetRowLabels();
+    }
+
+    private void MenuItem_Reset_Sorting(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        RefreshColumns();
+    }
+
+    private void MenuItem_Toggle_Filter(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        Context.ToggleFilter();
     }
 
     private async void DataGrid_KeyUp(object? sender, Avalonia.Input.KeyEventArgs e)

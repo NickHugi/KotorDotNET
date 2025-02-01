@@ -18,9 +18,17 @@
                 <MenuItem Header="_Save As" Click="MenuItem_SaveAs_Click" />
                 <MenuItem Header="_Reset" Click="MenuItem_Reset_Click" IsEnabled="{Binding FilePathAssigned}" />
             </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Add Row" Click="MenuItem_Add_Row" />
+                <MenuItem Header="_Reset Row Headers" Click="MenuItem_Reset_Row_Headers" />
+            </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem Header="_Reset Sorting" Click="MenuItem_Reset_Sorting" />
+                <MenuItem Header="_Toggle Filter" Click="MenuItem_Toggle_Filter" />
+            </MenuItem>
         </Menu>
 
-        <StackPanel DockPanel.Dock="Top" Margin="20 10 20 0">
+        <StackPanel DockPanel.Dock="Top" Margin="20 10 20 0" IsVisible="{Binding ShowFilter}">
             <TextBlock Foreground="Gray">Filter</TextBlock>
             <TextBox Text="{Binding Resource.Filter}" />
         </StackPanel>
@@ -44,7 +52,7 @@
                 </Style>
             </DataGrid.Styles>
             
-            <DataGrid.Columns>                
+            <DataGrid.Columns>
             </DataGrid.Columns>
         </DataGrid>
 
