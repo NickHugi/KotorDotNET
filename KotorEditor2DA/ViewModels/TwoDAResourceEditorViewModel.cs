@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
@@ -27,9 +28,13 @@ public class TwoDAResourceEditorViewModel : ResourceEditorViewModelBase<TwoDAVie
         set => this.RaiseAndSetIfChanged(ref _showFilter, value);
     }
 
+    public ReactiveCommand<Unit, Unit> ToggleFitlerCommand { get; }
+
 
     public TwoDAResourceEditorViewModel()
     {
+        ToggleFitlerCommand = ReactiveCommand.Create(ToggleFilter);
+
         Resource = new();
     }
 

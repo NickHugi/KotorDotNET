@@ -24,7 +24,7 @@
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="_Reset Sorting" Click="MenuItem_Reset_Sorting" />
-                <MenuItem Header="_Toggle Filter" Click="MenuItem_Toggle_Filter" />
+                <MenuItem Header="_Toggle Filter" Command="Resource.ToggleFilter" />
             </MenuItem>
         </Menu>
 
