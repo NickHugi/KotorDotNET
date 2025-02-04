@@ -20,6 +20,9 @@
                 <MenuItem Header="_Reset" Command="{Binding #Window.ResetFile}" InputGesture="Ctrl+R" HotKey="Ctrl+R" />
             </MenuItem>
             <MenuItem Header="_Edit">
+                <MenuItem Header="_Copy" Command="{Binding #Window.CopySelectedCell}" InputGesture="Ctrl+C" />
+                <MenuItem Header="_Paste" Command="{Binding #Window.PasteSelectedCell}" InputGesture="Ctrl+V" />
+                <Separator/> 
                 <MenuItem Header="_Add Row" Command="{Binding #Window.AddRow}" InputGesture="Ctrl+I" HotKey="Ctrl+I" />
                 <MenuItem Header="_Reset Row Headers" Command="{Binding #Window.ResetRowHeaders}" InputGesture="Ctrl+Alt+H" HotKey="Ctrl+Alt+H"/>
             </MenuItem>

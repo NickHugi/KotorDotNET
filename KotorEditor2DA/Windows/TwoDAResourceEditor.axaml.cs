@@ -99,7 +99,7 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         }
     }
 
-    public async Task CopySelectedCellToClipboard()
+    public async Task CopySelectedCell()
     {
         if (Clipboard is null)
             return;
@@ -111,7 +111,7 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         await Clipboard.SetTextAsync(text);
     }
 
-    public async Task PasteClipboardToSelectedCell()
+    public async Task PasteSelectedCell()
     {
         if (Clipboard is null)
             return;
@@ -196,11 +196,11 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         {
             if (e.Key == Key.C)
             {
-                await CopySelectedCellToClipboard();
+                await CopySelectedCell();
             }
             else if (e.Key == Key.V)
             {
-                await PasteClipboardToSelectedCell();
+                await PasteSelectedCell();
             }
         }
     }
