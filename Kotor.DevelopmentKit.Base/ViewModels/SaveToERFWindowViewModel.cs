@@ -21,6 +21,12 @@ public class SaveToERFWindowViewModel : ReactiveObject
         private set => this.RaiseAndSetIfChanged(ref _resourceList, value);
     }
 
+    private string _filepath = default!;
+    public string FilePath
+    {
+        get => _filepath;
+    }
+
     private string _resref = default!;
     public string ResRef
     {
@@ -42,6 +48,7 @@ public class SaveToERFWindowViewModel : ReactiveObject
         private set => this.RaiseAndSetIfChanged(ref _resourceTypeOptions, value);
     }
 
+
     public SaveToERFWindowViewModel()
     {
         this.ObservableForProperty(x => x.ResRef)
@@ -62,6 +69,7 @@ public class SaveToERFWindowViewModel : ReactiveObject
                 }
             });
     }
+
 
     public SaveToERFWindowViewModel LoadModel(string filepath, IEnumerable<ResourceType> resourceTypeOptions)
     {

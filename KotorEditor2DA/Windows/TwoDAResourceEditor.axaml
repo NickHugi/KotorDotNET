@@ -7,24 +7,25 @@
         xmlns:vm="using:Kotor.DevelopmentKit.Editor2DA.ViewModels"
         x:DataType="vm:TwoDAResourceEditorViewModel"
         x:Class="Kotor.DevelopmentKit.Editor2DA.TwoDAResourceEditor"
+        x:Name="Window"
         Title="{Binding WindowTitle}"
         Loaded="Window_Loaded">
     <DockPanel>
         <Menu DockPanel.Dock="Top" BorderThickness="0 0 0 1" BorderBrush="LightGray">
             <MenuItem Header="_File">
-                <MenuItem Header="_New" Click="MenuItem_New_Click" />
-                <MenuItem Header="_Open" Click="MenuItem_Open_Click" />
-                <MenuItem Header="_Save" Click="MenuItem_Save_Click" IsEnabled="{Binding FilePathAssigned}"/>
-                <MenuItem Header="_Save As" Click="MenuItem_SaveAs_Click" />
-                <MenuItem Header="_Reset" Click="MenuItem_Reset_Click" IsEnabled="{Binding FilePathAssigned}" />
+                <MenuItem Header="_New" Command="{Binding #Window.NewFile}" InputGesture="Ctrl+N" HotKey="Ctrl+N"/>
+                <MenuItem Header="_Open" Command="{Binding #Window.OpenFile}" InputGesture="Ctrl+O" HotKey="Ctrl+O"/>
+                <MenuItem Header="_Save" Command="{Binding #Window.SaveFile}" InputGesture="Ctrl+S" HotKey="Ctrl+S" IsEnabled="{Binding FilePathAssigned}"/>
+                <MenuItem Header="_Save As" Command="{Binding #Window.SaveFileAs}" InputGesture="Ctrl+Shift+S" HotKey="Ctrl+Shift+S" />
+                <MenuItem Header="_Reset" Command="{Binding #Window.ResetFile}" InputGesture="Ctrl+R" HotKey="Ctrl+R" />
             </MenuItem>
             <MenuItem Header="_Edit">
-                <MenuItem Header="_Add Row" Click="MenuItem_Add_Row" />
-                <MenuItem Header="_Reset Row Headers" Click="MenuItem_Reset_Row_Headers" />
+                <MenuItem Header="_Add Row" Command="{Binding #Window.AddRow}" InputGesture="Ctrl+I" HotKey="Ctrl+I" />
+                <MenuItem Header="_Reset Row Headers" Command="{Binding #Window.ResetRowHeaders}" InputGesture="Ctrl+Alt+H" HotKey="Ctrl+Alt+H"/>
             </MenuItem>
             <MenuItem Header="_View">
-                <MenuItem Header="_Reset Sorting" Click="MenuItem_Reset_Sorting" />
-                <MenuItem Header="_Toggle Filter" Command="Resource.ToggleFilter" />
+                <MenuItem Header="_Reset Sorting" Command="{Binding #Window.ResetSorting}" InputGesture="Ctrl+Alt+S" HotKey="Ctrl+Alt+S"/>
+                <MenuItem Header="_Toggle Filter" Command="{Binding #Window.ToggleFilter}" InputGesture="Ctrl+F" HotKey="Ctrl+F"/>
             </MenuItem>
         </Menu>
 

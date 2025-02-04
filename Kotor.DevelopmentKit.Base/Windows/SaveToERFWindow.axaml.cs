@@ -32,6 +32,7 @@ public partial class SaveToERFWindow : Window
     {
         Close(new SaveToERFWindowDialogResult
         {
+            FilePath = Context.FilePath,
             ResRef = Context.ResRef,
             ResourceType = Context.ResourceType!
         });

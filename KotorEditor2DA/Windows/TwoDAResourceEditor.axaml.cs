@@ -99,7 +99,7 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         }
     }
 
-    private async Task CopySelectedCellToClipboard()
+    public async Task CopySelectedCellToClipboard()
     {
         if (Clipboard is null)
             return;
@@ -111,7 +111,7 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         await Clipboard.SetTextAsync(text);
     }
 
-    private async Task PasteClipboardToSelectedCell()
+    public async Task PasteClipboardToSelectedCell()
     {
         if (Clipboard is null)
             return;
@@ -122,7 +122,61 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         Context.Resource.SetCellText(rowIndex, columnHeader, text);
     }
 
-    
+    public void NewFile()
+    {
+        Context.NewFile();
+    }
+
+    public async Task OpenFile()
+    {
+        var resource = await SaveResourcePicker();
+
+        if (resource is not null)
+        {
+            Context.LoadFromFile(resource.FilePath, resource.ResRef, resource.ResourceType);
+        }
+    }
+
+    public void SaveFile()
+    {
+        Context.SaveToFile();
+    }
+
+    public async Task SaveFileAs()
+    {
+        var resource = await SaveResourcePicker();
+
+        if (resource is not null)
+        {
+            Context.SaveToFile(resource.FilePath, resource.ResRef, resource.ResourceType);
+        }
+    }
+
+    public void ResetFile()
+    {
+        Context.LoadFromFile();
+    }
+
+    public void ToggleFilter()
+    {
+        Context.ToggleFilter();
+    }
+
+    public void ResetSorting()
+    {
+        TwodaDataGrid.Columns.ToList().ForEach(x => x.ClearSort());
+    }
+
+    public void ResetRowHeaders()
+    {
+        Context.Resource.ResetRowLabels();
+    }
+
+    public void AddRow()
+    {
+        Context.Resource.AddRow();
+    }
+
     private void Window_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         if (Design.IsDesignMode)
@@ -134,51 +188,6 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
             if (args.PropertyName == nameof(Context.Resource.Columns))
                 RefreshColumns();
         };
-    }
-
-    private void MenuItem_New_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        Context.NewFile();
-    }
-
-    private void MenuItem_Open_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        OpenFileDialog();
-    }
-
-    private void MenuItem_Save_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        Context.SaveToFile();
-    }
-
-    private void MenuItem_SaveAs_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        SaveFileDialog();
-    }
-
-    private void MenuItem_Reset_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        Context.LoadFromFile();
-    }
-
-    private void MenuItem_Add_Row(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        Context.Resource.AddRow();
-    }
-
-    private void MenuItem_Reset_Row_Headers(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        Context.Resource.ResetRowLabels();
-    }
-
-    private void MenuItem_Reset_Sorting(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        TwodaDataGrid.Columns.ToList().ForEach(x => x.ClearSort());
-    }
-
-    private void MenuItem_Toggle_Filter(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        Context.ToggleFilter();
     }
 
     private async void DataGrid_KeyUp(object? sender, Avalonia.Input.KeyEventArgs e)

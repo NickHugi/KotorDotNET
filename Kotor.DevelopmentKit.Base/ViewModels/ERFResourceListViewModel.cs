@@ -23,12 +23,12 @@ public class ERFResourceListViewModel : ReactiveObject
 {
     public IEncapsulation Encapsulator { get; private set; }
 
-    private SourceList<ResourceViewModel> _resourcesSource = new();
-    private readonly ReadOnlyObservableCollection<ResourceViewModel> _resources;
-    public ReadOnlyObservableCollection<ResourceViewModel> Resources => _resources;
+    private SourceList<EncapsulatedResourceViewModel> _resourcesSource = new();
+    private readonly ReadOnlyObservableCollection<EncapsulatedResourceViewModel> _resources;
+    public ReadOnlyObservableCollection<EncapsulatedResourceViewModel> Resources => _resources;
 
-    private ResourceViewModel? _selectedItem = null;
-    public ResourceViewModel? SelectedItem
+    private EncapsulatedResourceViewModel? _selectedItem = null;
+    public EncapsulatedResourceViewModel? SelectedItem
     {
         get => _selectedItem;
         set => this.RaiseAndSetIfChanged(ref _selectedItem, value);
@@ -82,7 +82,7 @@ public class ERFResourceListViewModel : ReactiveObject
         _typeFilter = resourceTypeFilter?.ToArray();
 
         _resourcesSource.Clear();
-        _resourcesSource.AddRange(Encapsulator.Select(x => new ResourceViewModel
+        _resourcesSource.AddRange(Encapsulator.Select(x => new EncapsulatedResourceViewModel
         {
             Filepath = x.FilePath,
             ResRef = x.ResRef,
@@ -96,7 +96,7 @@ public class ERFResourceListViewModel : ReactiveObject
         return this;
     }
 
-    public Func<ResourceViewModel, bool> CreatePredicate(string text)
+    public Func<EncapsulatedResourceViewModel, bool> CreatePredicate(string text)
     {
         return x => string.IsNullOrEmpty(ResRefFilter) || x.ResRef.Contains(ResRefFilter);
     }

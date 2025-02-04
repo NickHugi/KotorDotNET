@@ -9,7 +9,7 @@ using ReactiveUI;
 
 namespace Kotor.DevelopmentKit.Base.ViewModels;
 
-public class ResourceViewModel : ReactiveObject
+public class EncapsulatedResourceViewModel : ReactiveObject
 {
     private string _filepath = default!;
     public required string Filepath
@@ -30,5 +30,19 @@ public class ResourceViewModel : ReactiveObject
     {
         get => _type;
         set => this.RaiseAndSetIfChanged(ref _type, value);
+    }
+
+    private int _size = default!;
+    public required int Size
+    {
+        get => _size;
+        set => this.RaiseAndSetIfChanged(ref _size, value);
+    }
+
+    private int _offset = default!;
+    public required int Offset
+    {
+        get => _offset;
+        set => this.RaiseAndSetIfChanged(ref _offset, value);
     }
 }
