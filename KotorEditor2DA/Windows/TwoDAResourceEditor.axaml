@@ -5,6 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         Width="1200" Height="600"
         xmlns:vm="using:Kotor.DevelopmentKit.Editor2DA.ViewModels"
+        xmlns:ext="using:Kotor.DevelopmentKit.Base.Extensions"
         x:DataType="vm:TwoDAResourceEditorViewModel"
         x:Class="Kotor.DevelopmentKit.Editor2DA.TwoDAResourceEditor"
         x:Name="Window"
@@ -54,6 +55,7 @@
             ClipboardCopyMode="None"
             KeyUp="DataGrid_KeyUp"
             BeginningEdit="DataGrid_BeginningEdit"
+            PointerReleased="DataGrid_PointerReleased"
             CellEditEnded="DataGrid_CellEditEnded"
         >
             <DataGrid.Styles>

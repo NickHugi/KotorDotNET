@@ -6,6 +6,7 @@ using System.Data.Common;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -17,6 +18,7 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using DynamicData.Binding;
 using Kotor.DevelopmentKit.Base;
 using Kotor.DevelopmentKit.Base.Common;
 using Kotor.DevelopmentKit.Base.ViewModels;
@@ -27,6 +29,7 @@ using Kotor.NET.Common.Data;
 using Kotor.NET.Encapsulations;
 using Kotor.NET.Formats.Binary2DA.Serialisation;
 using Kotor.NET.Resources.Kotor2DA;
+using ReactiveUI;
 using Tmds.DBus.Protocol;
 
 namespace Kotor.DevelopmentKit.Editor2DA;
@@ -55,8 +58,17 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
     public TwoDAResourceEditor()
     {
         InitializeComponent();
-    }
 
+        DataContextChanged += (sender, e) =>
+        {
+            Context.WhenAnyValue(x => x.SelectedColumnIndex).Subscribe(x =>
+            {
+                var column = TwodaDataGrid.Columns.SingleOrDefault(x => x.DisplayIndex == Context.SelectedColumnIndex);
+                if (column is not null)
+                    TwodaDataGrid.CurrentColumn = column;
+            });
+        };
+    }
 
     private void RefreshColumns()
     {
@@ -197,6 +209,8 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
                 await PasteSelectedCell();
             }
         }
+
+        Context.SelectedColumnIndex = TwodaDataGrid.CurrentColumn?.DisplayIndex ?? 0;
     }
 
     private void DataGrid_BeginningEdit(object? sender, Avalonia.Controls.DataGridBeginningEditEventArgs e)
@@ -210,5 +224,10 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         var newValue = ((IEnumerable<string>)e.Row.DataContext!).ElementAt(e.Column.DisplayIndex);
         var columnHeader = (string)e.Column.Header;
         Context.EditCell(rowID, columnHeader, newValue, _originalCellValue);
+    }
+
+    private void DataGrid_PointerReleased(object? sender, Avalonia.Input.PointerReleasedEventArgs e)
+    {
+        Context.SelectedColumnIndex = TwodaDataGrid.CurrentColumn?.DisplayIndex ?? 0;
     }
 }
