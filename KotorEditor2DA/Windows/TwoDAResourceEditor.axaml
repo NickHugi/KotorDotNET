@@ -20,6 +20,9 @@
                 <MenuItem Header="_Reset" Command="{Binding #Window.ResetFile}" InputGesture="Ctrl+R" HotKey="Ctrl+R" />
             </MenuItem>
             <MenuItem Header="_Edit">
+                <MenuItem Header="_Undo" Command="{Binding #Window.Undo}" InputGesture="Ctrl+U" HotKey="Ctrl+U" IsEnabled="{Binding History.CanUndo}" />
+                <MenuItem Header="_Redo" Command="{Binding #Window.Redo}" InputGesture="Ctrl+Y" HotKey="Ctrl+Y" IsEnabled="{Binding History.CanRedo}" />
+                <Separator/>
                 <MenuItem Header="_Copy" Command="{Binding #Window.CopySelectedCell}" InputGesture="Ctrl+C" />
                 <MenuItem Header="_Paste" Command="{Binding #Window.PasteSelectedCell}" InputGesture="Ctrl+V" />
                 <Separator/> 
@@ -40,6 +43,7 @@
         <DataGrid
             Margin="20"
             ItemsSource="{Binding Resource.Rows, Mode=TwoWay}"
+            SelectedIndex="{Binding SelectedRowIndex}"
             Name="TwodaDataGrid"
             AutoGenerateColumns="False"
             IsReadOnly="False"
@@ -49,6 +53,8 @@
             BorderBrush="Gray"
             ClipboardCopyMode="None"
             KeyUp="DataGrid_KeyUp"
+            BeginningEdit="DataGrid_BeginningEdit"
+            CellEditEnded="DataGrid_CellEditEnded"
         >
             <DataGrid.Styles>
                 <Style Selector="DataGridRow:nth-child(odd)">

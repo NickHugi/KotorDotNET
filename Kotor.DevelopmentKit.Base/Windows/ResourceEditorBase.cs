@@ -20,15 +20,6 @@ public abstract class ResourceEditorBase : Window
     public abstract FilePickerSaveOptions FilePickerSaveOptions { get; }
     public abstract List<ResourceType> ResourceTypes { get; }
 
-    protected abstract void LoadFromFile();
-    protected abstract void LoadFromFile(string filepath);
-    protected abstract void LoadFromFile(string filepath, ResRef resref, ResourceType resourceType);
-
-    protected abstract void SaveToFile();
-    protected abstract void SaveToFile(string filepath);
-    protected abstract void SaveToFile(string filepath, ResRef resref, ResourceType resourceType);
-
-
 
     protected async Task<SaveToERFWindowDialogResult?> SaveResourcePicker()
     {

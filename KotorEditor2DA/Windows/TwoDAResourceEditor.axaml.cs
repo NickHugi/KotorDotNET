@@ -16,6 +16,7 @@ using Avalonia.Data.Converters;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using Kotor.DevelopmentKit.Base;
 using Kotor.DevelopmentKit.Base.Common;
 using Kotor.DevelopmentKit.Base.ViewModels;
@@ -48,37 +49,12 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
     };
     public override List<ResourceType> ResourceTypes => [ResourceType.TWODA];
 
+    private string _originalCellValue;
+
 
     public TwoDAResourceEditor()
     {
         InitializeComponent();
-    }
-
-
-    protected override void LoadFromFile()
-    {
-        Context.LoadFromFile();
-    }
-    protected override void LoadFromFile(string filepath)
-    {
-        Context.LoadFromFile(filepath);
-    }
-    protected override void LoadFromFile(string filepath, ResRef resref, ResourceType resourceType)
-    {
-        Context.LoadFromFile(filepath, resref, resourceType);
-    }
-
-    protected override void SaveToFile()
-    {
-        Context.SaveToFile();
-    }
-    protected override void SaveToFile(string filepath)
-    {
-        Context.SaveToFile(filepath);
-    }
-    protected override void SaveToFile(string filepath, ResRef resref, ResourceType resourceType)
-    {
-        Context.SaveToFile(filepath, resref, resourceType);
     }
 
 
@@ -116,10 +92,15 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         if (Clipboard is null)
             return;
 
-        var text = await Clipboard.GetTextAsync() ?? "";
-        var rowIndex = TwodaDataGrid.SelectedIndex;
+        var rowIndex = Context.SelectedRowIndex;
+        var rowID = Context.Resource.GetRowID(Context.SelectedRowIndex);
+        var currentColumn = TwodaDataGrid.CurrentColumn;
         var columnHeader = (string)TwodaDataGrid.CurrentColumn.Header;
-        Context.Resource.SetCellText(rowIndex, columnHeader, text);
+        var newValue = await Clipboard.GetTextAsync() ?? "";
+
+        Context.EditCell(rowID, columnHeader, newValue);
+        TwodaDataGrid.CurrentColumn = currentColumn;
+        TwodaDataGrid.SelectedIndex = rowIndex;
     }
 
     public void NewFile()
@@ -177,6 +158,19 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         Context.Resource.AddRow();
     }
 
+    public void Undo()
+    {
+        // For whatever reason calling Undo/Redo directly from a MenuItem command causes the
+        // DataGrid to display the wrong data on the affected row.
+        Dispatcher.UIThread.Post(() => Context.Undo(), DispatcherPriority.Default);
+    }
+
+    public void Redo()
+    {
+        Dispatcher.UIThread.Post(() => Context.Redo(), DispatcherPriority.Default);
+    }
+
+
     private void Window_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         if (Design.IsDesignMode)
@@ -203,5 +197,18 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
                 await PasteSelectedCell();
             }
         }
+    }
+
+    private void DataGrid_BeginningEdit(object? sender, Avalonia.Controls.DataGridBeginningEditEventArgs e)
+    {
+        _originalCellValue = ((IEnumerable<string>)e.Row.DataContext!).ElementAt(e.Column.DisplayIndex);
+    }
+
+    private void DataGrid_CellEditEnded(object? sender, Avalonia.Controls.DataGridCellEditEndedEventArgs e)
+    {
+        var rowID = Context.Resource.GetRowID(Context.SelectedRowIndex);
+        var newValue = ((IEnumerable<string>)e.Row.DataContext!).ElementAt(e.Column.DisplayIndex);
+        var columnHeader = (string)e.Column.Header;
+        Context.EditCell(rowID, columnHeader, newValue, _originalCellValue);
     }
 }

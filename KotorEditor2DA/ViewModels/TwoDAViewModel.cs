@@ -81,17 +81,28 @@ public class TwoDAViewModel : ReactiveObject
         return twoda;
     }
 
+    public int GetRowID(int rowIndex)
+    {
+        var row = Rows.ElementAt(rowIndex);
+        return _rowsSource.Items.IndexOf(row);
+    }
 
-    public void SetCellText(int rowIndex, string columnName, string value)
+    public void SetCellText(int rowID, string columnName, string value)
     {
         var columnIndex = Columns.IndexOf(columnName);
 
         _rowsSource.Edit(rows =>
         {
-            var row = rows[rowIndex].ToList();
+            var row = rows[rowID].ToList();
             row[columnIndex] = value;
-            rows.Replace(rows[rowIndex], row);
+            rows.Replace(rows[rowID], row);
         });
+    }
+
+    public string GetCellText(int rowID, string columnName)
+    {
+        var columnIndex = Columns.IndexOf(columnName);
+        return _rowsSource.Items[rowID].ElementAt(columnIndex);
     }
 
     public void AddRow()

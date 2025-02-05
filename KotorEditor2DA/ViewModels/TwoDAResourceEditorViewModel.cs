@@ -6,8 +6,11 @@ using System.Linq;
 using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia.Controls.Documents;
 using DynamicData;
+using Kotor.DevelopmentKit.Base.Common;
 using Kotor.DevelopmentKit.Base.ViewModels;
+using Kotor.DevelopmentKit.Editor2DA.Actions;
 using Kotor.NET.Encapsulations;
 using Kotor.NET.Formats.Binary2DA.Serialisation;
 using Kotor.NET.Resources.Kotor2DA;
@@ -28,13 +31,23 @@ public class TwoDAResourceEditorViewModel : ResourceEditorViewModelBase<TwoDAVie
         set => this.RaiseAndSetIfChanged(ref _showFilter, value);
     }
 
-    public ReactiveCommand<Unit, Unit> ToggleFitlerCommand { get; }
+    private int _selectedRowIndex;
+    public int SelectedRowIndex
+    {
+        get => _selectedRowIndex;
+        set => this.RaiseAndSetIfChanged(ref _selectedRowIndex, value);
+    }
+
+    private readonly ActionHistory<TwoDAResourceEditorViewModel> _history;
+    public ActionHistory<TwoDAResourceEditorViewModel> History
+    {
+        get => _history;
+    }
 
 
     public TwoDAResourceEditorViewModel()
     {
-        ToggleFitlerCommand = ReactiveCommand.Create(ToggleFilter);
-
+        _history = new(this);
         Resource = new();
     }
 
@@ -76,5 +89,30 @@ public class TwoDAResourceEditorViewModel : ResourceEditorViewModelBase<TwoDAVie
     public void ToggleFilter()
     {
         ShowFilter = !ShowFilter;
+    }
+
+    public void Undo()
+    {
+        _history.Undo();
+    }
+
+    public void Redo()
+    {
+        _history.Redo();
+    }
+
+    public void EditCell(int rowID, string columnHeader, string newValue)
+    {
+        var oldValue = Resource.GetCellText(rowID, columnHeader);
+        var action = new EditCellAction(rowID, columnHeader, newValue, oldValue);
+        _history.Apply(action);
+    }
+    public void EditCell(int rowID, string columnHeader, string newValue, string oldValue)
+    {
+        if (oldValue == newValue)
+            return;
+
+        var action = new EditCellAction(rowID, columnHeader, newValue, oldValue);
+        _history.Apply(action);
     }
 }
