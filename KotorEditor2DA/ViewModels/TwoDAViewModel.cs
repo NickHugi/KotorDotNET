@@ -112,6 +112,53 @@ public class TwoDAViewModel : ReactiveObject
             rows.Add([rows.Count.ToString(), .. Columns.Select(x => "")]);
         });
     }
+    public void AddRow(int rowID)
+    {
+        _rowsSource.Edit(rows =>
+        {
+            rows.Insert(rowID, [rows.Count.ToString(), .. Columns.Select(x => "")]);
+        });
+    }
+
+    public void RemoveRow()
+    {
+        _rowsSource.RemoveAt(_rowsSource.Count - 1);
+    }
+    public void RemoveRow(int rowID)
+    {
+        _rowsSource.RemoveAt(rowID);
+    }
+
+    public void AddColumn(string columnHeader)
+    {
+        AddColumn(columnHeader, _rowsSource.Items.Select(x => ""));
+    }
+    public void AddColumn(string columnHeader, IEnumerable<string> newCellValues)
+    {
+        Columns.Add(columnHeader);
+
+        _rowsSource.Edit(rows =>
+        {
+            for (int i = 0; i < rows.Count; i++)
+            {
+                rows[i].Add(newCellValues.ElementAt(i));
+            }
+        });
+    }
+
+    public void RemoveColumn(string columnHeader)
+    {
+        var columnIndex = _columns.IndexOf(columnHeader);
+        Columns.Remove(columnHeader);
+
+        _rowsSource.Edit(rows =>
+        {
+            foreach (var row in rows)
+            {
+                row.RemoveAt(columnIndex);
+            }
+        });
+    }
 
     public void ResetRowLabels()
     {
