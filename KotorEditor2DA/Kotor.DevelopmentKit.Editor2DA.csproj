@@ -22,7 +22,8 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="DynamicData" Version="9.1.1" />
-    <PackageReference Include="ReactiveUI" Version="20.1.1" />
+    <PackageReference Include="ReactiveUI" Version="20.1.63" />
+    <PackageReference Include="ReactiveUI.Validation" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Windows\EditColumnDialog.axaml.cs">
+      <DependentUpon>EditColumnDialog.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Windows\TwoDAResourceEditor.axaml.cs">
       <DependentUpon>TwoDAResourceEditor.axaml</DependentUpon>
     </Compile>
