@@ -122,6 +122,12 @@ public class TwoDAResourceEditorViewModel : ResourceEditorViewModelBase<TwoDAVie
             return;
 
         var action = new EditCellAction(rowID, columnHeader, newValue, oldValue);
-        _history.Apply(action);
+        History.Apply(action);
+    }
+
+    public void AddColumn(string columnHeader)
+    {
+        var action = new AddColumnAction(columnHeader);
+        History.Apply(action);
     }
 }

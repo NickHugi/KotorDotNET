@@ -19,13 +19,11 @@ public class AddColumnAction : IAction<TwoDAResourceEditorViewModel>
 
     public void Apply(TwoDAResourceEditorViewModel data)
     {
-        data.Resource.AddRow();
-        data.SelectedRowIndex = data.Resource.Rows.Count - 1;
+        data.Resource.AddColumn(ColumnHeader);
     }
 
     public void Undo(TwoDAResourceEditorViewModel data)
     {
-        data.Resource.RemoveRow(data.Resource.Rows.Count - 1);
-        data.SelectedRowIndex = data.Resource.Rows.Count - 1;
+        data.Resource.RemoveColumn(ColumnHeader);
     }
 }

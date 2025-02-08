@@ -28,6 +28,7 @@
                 <MenuItem Header="_Paste" Command="{Binding #Window.PasteSelectedCell}" InputGesture="Ctrl+V" />
                 <Separator/> 
                 <MenuItem Header="_Add Row" Command="{Binding #Window.AddRow}" InputGesture="Ctrl+I" HotKey="Ctrl+I" />
+                <MenuItem Header="_Add Column" Command="{Binding #Window.AddColumn}" />
                 <MenuItem Header="_Reset Row Headers" Command="{Binding #Window.ResetRowHeaders}" InputGesture="Ctrl+Alt+H" HotKey="Ctrl+Alt+H"/>
             </MenuItem>
             <MenuItem Header="_View">

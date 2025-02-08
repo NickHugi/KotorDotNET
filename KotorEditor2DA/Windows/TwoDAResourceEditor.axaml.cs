@@ -170,6 +170,17 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         Context.Resource.AddRow();
     }
 
+    public async void AddColumn()
+    {
+        var dialog = new EditColumnDialog()
+        {
+            Title = "Create new column",
+            DataContext = new EditColumnDialogViewModel(Context.Resource.Columns.ToArray())
+        };
+        var columnHeader = await dialog.ShowDialog<string>(this);
+        Context.AddColumn(columnHeader);
+    }
+
     public void Undo()
     {
         // For whatever reason calling Undo/Redo directly from a MenuItem command causes the
