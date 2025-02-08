@@ -46,7 +46,6 @@ public class TwoDAResourceEditorViewModel : ResourceEditorViewModelBase<TwoDAVie
         set => this.RaiseAndSetIfChanged(ref _selectedColumnIndex, value);
     }
 
-
     private readonly ActionHistory<TwoDAResourceEditorViewModel> _history;
     public ActionHistory<TwoDAResourceEditorViewModel> History
     {

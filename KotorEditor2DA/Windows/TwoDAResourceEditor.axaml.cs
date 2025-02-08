@@ -18,6 +18,7 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using DynamicData;
 using DynamicData.Binding;
 using Kotor.DevelopmentKit.Base;
 using Kotor.DevelopmentKit.Base.Common;
@@ -25,6 +26,7 @@ using Kotor.DevelopmentKit.Base.ViewModels;
 using Kotor.DevelopmentKit.Base.Windows;
 using Kotor.DevelopmentKit.Editor2DA;
 using Kotor.DevelopmentKit.Editor2DA.ViewModels;
+using Kotor.DevelopmentKit.Editor2DA.Windows;
 using Kotor.NET.Common.Data;
 using Kotor.NET.Encapsulations;
 using Kotor.NET.Formats.Binary2DA.Serialisation;
@@ -52,23 +54,14 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
     };
     public override List<ResourceType> ResourceTypes => [ResourceType.TWODA];
 
-    private string _originalCellValue;
+    private string _originalCellValue = "";
 
 
     public TwoDAResourceEditor()
     {
         InitializeComponent();
-
-        DataContextChanged += (sender, e) =>
-        {
-            Context.WhenAnyValue(x => x.SelectedColumnIndex).Subscribe(x =>
-            {
-                var column = TwodaDataGrid.Columns.SingleOrDefault(x => x.DisplayIndex == Context.SelectedColumnIndex);
-                if (column is not null)
-                    TwodaDataGrid.CurrentColumn = column;
-            });
-        };
     }
+
 
     private void RefreshColumns()
     {
@@ -191,6 +184,24 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
     public void Redo()
     {
         Dispatcher.UIThread.Post(() => Context.Redo(), DispatcherPriority.Default);
+    }
+
+
+    protected override void OnDataContextChanged(EventArgs e)
+    {
+        base.OnDataContextChanged(e);
+
+        Context.WhenAnyValue(x => x.SelectedColumnIndex).Subscribe(x =>
+        {
+            var column = TwodaDataGrid.Columns.SingleOrDefault(x => x.DisplayIndex == Context.SelectedColumnIndex);
+            if (column is not null)
+                TwodaDataGrid.CurrentColumn = column;
+        });
+
+        Context.Resource.WhenAnyValue(x => x.Columns.Count).Subscribe(x =>
+        {
+            RefreshColumns();
+        });
     }
 
 

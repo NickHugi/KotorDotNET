@@ -59,4 +59,10 @@ public class ActionHistory<T> : INotifyPropertyChanged where T : class
         PropertyChanged!(this, new(nameof(CanUndo)));
         PropertyChanged!(this, new(nameof(CanRedo)));
     }
+
+    public void Clear()
+    {
+        _redo.Clear();
+        _undo.Clear();
+    }
 }
