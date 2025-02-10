@@ -1,38 +1,19 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data.Common;
-using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reactive.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Templates;
 using Avalonia.Data;
-using Avalonia.Data.Converters;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
-using DynamicData;
-using DynamicData.Binding;
-using Kotor.DevelopmentKit.Base;
 using Kotor.DevelopmentKit.Base.Common;
-using Kotor.DevelopmentKit.Base.ViewModels;
 using Kotor.DevelopmentKit.Base.Windows;
-using Kotor.DevelopmentKit.Editor2DA;
 using Kotor.DevelopmentKit.Editor2DA.ViewModels;
 using Kotor.DevelopmentKit.Editor2DA.Windows;
 using Kotor.NET.Common.Data;
-using Kotor.NET.Encapsulations;
-using Kotor.NET.Formats.Binary2DA.Serialisation;
-using Kotor.NET.Resources.Kotor2DA;
 using ReactiveUI;
-using Tmds.DBus.Protocol;
 
 namespace Kotor.DevelopmentKit.Editor2DA;
 
@@ -54,6 +35,9 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
     };
     public override List<ResourceType> ResourceTypes => [ResourceType.TWODA];
 
+    /// <summary>
+    /// Track the value of the selected cell before editing has finished.
+    /// </summary>
     private string _originalCellValue = "";
 
 

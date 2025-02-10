@@ -27,7 +27,7 @@
                 <Separator/> 
                 <MenuItem Header="_Add Row" Command="{Binding #Window.AddRow}" InputGesture="Ctrl+I" HotKey="Ctrl+I" />
                 <MenuItem Header="_Add Column" Command="{Binding #Window.AddColumn}" />
-                <MenuItem Header="_Reset Row Headers" Command="{Binding #Window.ResetRowHeaders}" InputGesture="Ctrl+Alt+H" HotKey="Ctrl+Alt+H"/>
+                <MenuItem Header="_Reset Row Headers" Command="{Binding #Window.ResetRowHeaders}" />
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="_Reset Sorting" Command="{Binding #Window.ResetSorting}" InputGesture="Ctrl+Alt+S" HotKey="Ctrl+Alt+S"/>

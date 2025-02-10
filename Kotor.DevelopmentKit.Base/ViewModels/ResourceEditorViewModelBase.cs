@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Kotor.NET.Common.Data;
 using Kotor.NET.Encapsulations;
-using Kotor.NET.Formats.Binary2DA.Serialisation;
-using Kotor.NET.Resources.Kotor2DA;
 using ReactiveUI;
 
 namespace Kotor.DevelopmentKit.Base.ViewModels;
 
 public abstract class ResourceEditorViewModelBase<T, U> : ReactiveObject where U : new()
 {
-    public virtual string WindowTitle
+    /// <summary>
+    /// The path only including either the last directory leading up to the file, or if the file
+    /// is contained within an ERF-like format, then the filename of that is used in the last directory
+    /// name's stead.
+    /// </summary>
+    public string FilePathSnippet
     {
         get
         {
@@ -34,6 +34,9 @@ public abstract class ResourceEditorViewModelBase<T, U> : ReactiveObject where U
             }
         }
     }
+    public abstract string WindowTitlePrefix { get; }
+    public string WindowTitle => WindowTitlePrefix + ((FilePathSnippet == "") ? ("") : ($" - {FilePathSnippet}"));
+
     public string ResourceFilename => (ResRef is null || ResourceType is null) ? Path.GetFileName(FilePath) : $"{ResRef}.{ResourceType.Extension}";
     public bool FilePathAssigned => FilePath is not null;
 

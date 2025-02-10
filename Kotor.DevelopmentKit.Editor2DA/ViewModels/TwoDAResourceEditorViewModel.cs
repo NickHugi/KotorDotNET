@@ -23,7 +23,7 @@ namespace Kotor.DevelopmentKit.Editor2DA.ViewModels;
 
 public class TwoDAResourceEditorViewModel : ResourceEditorViewModelBase<TwoDAViewModel, TwoDA>
 {
-    public override string WindowTitle => "KDK - 2DA Editor - " + base.WindowTitle;
+    public override string WindowTitlePrefix => "2DA Editor";
 
     private bool _showFilter;
     public bool ShowFilter
