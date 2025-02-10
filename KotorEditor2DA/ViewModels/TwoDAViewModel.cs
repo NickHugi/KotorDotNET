@@ -160,7 +160,7 @@ public class TwoDAViewModel : ReactiveObject
         });
     }
 
-    public void ResetRowLabels()
+    public void ResetRowHeaders()
     {
         _rowsSource.Edit(rows =>
         {

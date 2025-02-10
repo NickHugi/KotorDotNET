@@ -8,8 +8,7 @@
         x:DataType="vm:TwoDAResourceEditorViewModel"
         x:Class="Kotor.DevelopmentKit.Editor2DA.TwoDAResourceEditor"
         x:Name="Window"
-        Title="{Binding WindowTitle}"
-        Loaded="Window_Loaded">    
+        Title="{Binding WindowTitle}">    
     <DockPanel>
         <Menu DockPanel.Dock="Top" BorderThickness="0 0 0 1" BorderBrush="LightGray">
             <MenuItem Header="_File">
@@ -20,7 +19,7 @@
                 <MenuItem Header="_Reset" Command="{Binding #Window.ResetFile}" InputGesture="Ctrl+R" HotKey="Ctrl+R" />
             </MenuItem>
             <MenuItem Header="_Edit">
-                <MenuItem Header="_Undo" Command="{Binding #Window.Undo}" InputGesture="Ctrl+U" HotKey="Ctrl+U" IsEnabled="{Binding History.CanUndo}" />
+                <MenuItem Header="_Undo" Command="{Binding #Window.Undo}" InputGesture="Ctrl+Z" HotKey="Ctrl+Z" IsEnabled="{Binding History.CanUndo}" />
                 <MenuItem Header="_Redo" Command="{Binding #Window.Redo}" InputGesture="Ctrl+Y" HotKey="Ctrl+Y" IsEnabled="{Binding History.CanRedo}" />
                 <Separator/>
                 <MenuItem Header="_Copy" Command="{Binding #Window.CopySelectedCell}" InputGesture="Ctrl+C" />

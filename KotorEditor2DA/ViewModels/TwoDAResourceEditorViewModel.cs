@@ -129,4 +129,16 @@ public class TwoDAResourceEditorViewModel : ResourceEditorViewModelBase<TwoDAVie
         var action = new AddColumnAction(columnHeader);
         History.Apply(action);
     }
+
+    public void AddRow()
+    {
+        var action = new AddRowAction();
+        History.Apply(action);
+    }
+
+    public void ResetRowHeaders()
+    {
+        var action = new ResetRowHeadersAction(Resource.Rows.Select(x => x[0]));
+        History.Apply(action);
+    }
 }

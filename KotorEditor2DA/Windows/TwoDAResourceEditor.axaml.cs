@@ -155,12 +155,12 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
 
     public void ResetRowHeaders()
     {
-        Context.Resource.ResetRowLabels();
+        Context.ResetRowHeaders();
     }
 
     public void AddRow()
     {
-        Context.Resource.AddRow();
+        Context.AddRow();
     }
 
     public async void AddColumn()
@@ -203,20 +203,7 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
             RefreshColumns();
         });
     }
-
-
-    private void Window_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        if (Design.IsDesignMode)
-            return;
-
-        RefreshColumns();
-        Context.Resource.PropertyChanged += (sender, args) =>
-        {
-            if (args.PropertyName == nameof(Context.Resource.Columns))
-                RefreshColumns();
-        };
-    }
+    
 
     private async void DataGrid_KeyUp(object? sender, Avalonia.Input.KeyEventArgs e)
     {
