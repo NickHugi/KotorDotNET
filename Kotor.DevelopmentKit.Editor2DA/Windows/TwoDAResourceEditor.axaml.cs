@@ -166,6 +166,11 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         Context.AddColumn(columnHeader);
     }
 
+    public void RemoveColumn(string columnHeader)
+    {
+        Context.RemoveColumn(columnHeader);
+    }
+
     public void Undo()
     {
         // For whatever reason calling Undo/Redo directly from a MenuItem command causes the
@@ -202,10 +207,6 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         });
 
         Context.Resource.WhenAnyValue(x => x.Columns.Count).Subscribe(x =>
-        {
-            RefreshColumns();
-        });
-        Context.Resource.Columns.ToObservableChangeSet().Subscribe(x =>
         {
             RefreshColumns();
         });
@@ -255,6 +256,7 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
             var contextMenu = new ContextMenu();
             var headerText = (header.Content as ColumnViewModel)!.Header;
             contextMenu.Items.Add(new MenuItem {  Header = "Rename Column", Command = ReactiveCommand.Create(() => RenameColumn(headerText)), IsEnabled = (headerText != "Row Header") });
+            contextMenu.Items.Add(new MenuItem {  Header = "Delete Column", Command = ReactiveCommand.Create(() => RemoveColumn(headerText)), IsEnabled = (headerText != "Row Header") });
 
             grid.ContextMenu = contextMenu;
             contextMenu.Open(grid);

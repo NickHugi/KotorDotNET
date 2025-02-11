@@ -136,6 +136,14 @@ public class TwoDAResourceEditorViewModel : ResourceEditorViewModelBase<TwoDAVie
         History.Apply(action);
     }
 
+    public void RemoveColumn(string columnHeader)
+    {
+        var columnIndex = Resource.GetColumnIndex(columnHeader);
+        var cells = Resource.Rows.Select(x => x.ElementAt(columnIndex));
+        var action = new RemoveColumnAction(columnHeader, cells);
+        History.Apply(action);
+    }
+
     public void AddRow()
     {
         var action = new AddRowAction();

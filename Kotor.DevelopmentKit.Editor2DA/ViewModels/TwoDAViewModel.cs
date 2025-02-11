@@ -144,8 +144,8 @@ public class TwoDAViewModel : ReactiveObject
 
     public void RemoveColumn(string columnHeader)
     {
-        var columnIndex = Columns.IndexOf(columnHeader);
-        Columns.Remove(columnHeader);
+        var columnIndex = GetColumnIndex(columnHeader);
+        Columns.RemoveAt(columnIndex);
 
         _rowsSource.Edit(rows =>
         {
@@ -154,6 +154,11 @@ public class TwoDAViewModel : ReactiveObject
                 row.RemoveAt(columnIndex);
             }
         });
+    }
+
+    public int GetColumnIndex(string columnHeader)
+    {
+        return Columns.ToList().FindIndex(x => x.Header == columnHeader);
     }
 
     public void ResetRowHeaders()
