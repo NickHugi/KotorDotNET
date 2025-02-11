@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -8,12 +9,14 @@ using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using DynamicData.Binding;
 using Kotor.DevelopmentKit.Base.Common;
 using Kotor.DevelopmentKit.Base.Windows;
 using Kotor.DevelopmentKit.Editor2DA.ViewModels;
 using Kotor.DevelopmentKit.Editor2DA.Windows;
 using Kotor.NET.Common.Data;
 using ReactiveUI;
+using DynamicData;
 
 namespace Kotor.DevelopmentKit.Editor2DA;
 
@@ -53,14 +56,19 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
 
         for (int i = 0; i < Context.Resource.Columns.Count(); i++)
         {
-            var column = Context.Resource.Columns.ElementAt(i);
-
-            TwodaDataGrid.Columns.Add(new DataGridTextColumn()
+            var columnHeader = Context.Resource.Columns.ElementAt(i);
+            var column = new DataGridTextColumn()
             {
-                Header = column,
+                Header = columnHeader,
                 Binding = new Binding($"[{i}]"),
                 IsReadOnly = false,
-            });
+            };
+            column.HeaderPointerReleased += (e, a) =>
+            {
+
+            };
+
+            TwodaDataGrid.Columns.Add(column);
         }
     }
 
@@ -152,7 +160,7 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         var dialog = new EditColumnDialog()
         {
             Title = "Create new column",
-            DataContext = new EditColumnDialogViewModel(Context.Resource.Columns.ToArray())
+            DataContext = new EditColumnDialogViewModel(Context.Resource.Columns.Select(x => x.Header).ToArray())
         };
         var columnHeader = await dialog.ShowDialog<string>(this);
         Context.AddColumn(columnHeader);
@@ -170,6 +178,17 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         Dispatcher.UIThread.Post(() => Context.Redo(), DispatcherPriority.Default);
     }
 
+    public async Task RenameColumn(string targetColumnHeader)
+    {
+        var dialog = new EditColumnDialog()
+        {
+            Title = $"Rename '{targetColumnHeader}' column",
+            DataContext = new EditColumnDialogViewModel(Context.Resource.Columns.Select(x => x.Header).ToArray())
+        };
+        var newColumnHeader = await dialog.ShowDialog<string>(this);
+        Context.RenameColumn(targetColumnHeader, newColumnHeader);
+    }
+
 
     protected override void OnDataContextChanged(EventArgs e)
     {
@@ -183,6 +202,14 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         });
 
         Context.Resource.WhenAnyValue(x => x.Columns.Count).Subscribe(x =>
+        {
+            RefreshColumns();
+        });
+        Context.Resource.Columns.ToObservableChangeSet().Subscribe(x =>
+        {
+            RefreshColumns();
+        });
+        Context.Resource.Columns.ToObservableChangeSet().AutoRefresh(x => x.Header).Subscribe(x =>
         {
             RefreshColumns();
         });
@@ -222,5 +249,16 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
     private void DataGrid_PointerReleased(object? sender, Avalonia.Input.PointerReleasedEventArgs e)
     {
         Context.SelectedColumnIndex = TwodaDataGrid.CurrentColumn?.DisplayIndex ?? 0;
+
+        if (e.InitialPressMouseButton == MouseButton.Right && e.Source is Grid grid && grid.TemplatedParent is DataGridColumnHeader header)
+        {
+            var contextMenu = new ContextMenu();
+            var headerText = (header.Content as ColumnViewModel)!.Header;
+            contextMenu.Items.Add(new MenuItem {  Header = "Rename Column", Command = ReactiveCommand.Create(() => RenameColumn(headerText)), IsEnabled = (headerText != "Row Header") });
+
+            grid.ContextMenu = contextMenu;
+            contextMenu.Open(grid);
+        }
+        e.Route = Avalonia.Interactivity.RoutingStrategies.Tunnel;
     }
 }

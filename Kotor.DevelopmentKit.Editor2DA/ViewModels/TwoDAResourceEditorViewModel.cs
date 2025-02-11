@@ -130,6 +130,12 @@ public class TwoDAResourceEditorViewModel : ResourceEditorViewModelBase<TwoDAVie
         History.Apply(action);
     }
 
+    public void RenameColumn(string oldColumnHeader, string newColumnHeader)
+    {
+        var action = new RenameColumnAction(oldColumnHeader, newColumnHeader);
+        History.Apply(action);
+    }
+
     public void AddRow()
     {
         var action = new AddRowAction();

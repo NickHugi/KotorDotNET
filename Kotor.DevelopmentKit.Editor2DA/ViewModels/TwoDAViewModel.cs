@@ -23,12 +23,7 @@ public class TwoDAViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _filter, value);
     }
 
-    private ObservableCollection<string> _columns = [];
-    public ObservableCollection<string> Columns
-    {
-        get => _columns;
-        set => this.RaiseAndSetIfChanged(ref _columns, value);
-    }
+    public ObservableCollection<ColumnViewModel> Columns { get; } = [];
 
     private SourceList<List<string>> _rowsSource;
     private readonly ReadOnlyObservableCollection<List<string>> _rows;
@@ -52,7 +47,8 @@ public class TwoDAViewModel : ReactiveObject
 
     public void Load(TwoDA twoda)
     {
-        Columns = ["Row Header", .. twoda.GetColumns()];
+        Columns.Clear();
+        Columns.AddRange(["Row Header", .. twoda.GetColumns()]);
 
         _rowsSource.Clear();
         _rowsSource.AddRange(twoda.GetRows().Select<TwoDARow, List<string>>(x => [x.RowHeader, .. Columns.Skip(1).Select(y => x.GetCell(y).AsString())]).ToList());
@@ -148,7 +144,7 @@ public class TwoDAViewModel : ReactiveObject
 
     public void RemoveColumn(string columnHeader)
     {
-        var columnIndex = _columns.IndexOf(columnHeader);
+        var columnIndex = Columns.IndexOf(columnHeader);
         Columns.Remove(columnHeader);
 
         _rowsSource.Edit(rows =>

@@ -21,9 +21,13 @@ public class RenameColumnAction : IAction<TwoDAResourceEditorViewModel>
 
     public void Apply(TwoDAResourceEditorViewModel data)
     {
+        var index = data.Resource.Columns.ToList().FindIndex(x => x.Header == OldColumnHeader);
+        data.Resource.Columns[index].Header = NewColumnHeader;
     }
 
     public void Undo(TwoDAResourceEditorViewModel data)
     {
+        var index = data.Resource.Columns.IndexOf(NewColumnHeader);
+        data.Resource.Columns[index] = OldColumnHeader;
     }
 }
