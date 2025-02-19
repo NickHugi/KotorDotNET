@@ -243,7 +243,7 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
     {
         var rowID = Context.Resource.GetRowID(Context.SelectedRowIndex);
         var newValue = ((IEnumerable<string>)e.Row.DataContext!).ElementAt(e.Column.DisplayIndex);
-        var columnHeader = (string)e.Column.Header;
+        var columnHeader = ((ColumnViewModel)e.Column.Header).Header;
         Context.EditCell(rowID, columnHeader, newValue, _originalCellValue);
     }
 
