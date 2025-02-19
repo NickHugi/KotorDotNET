@@ -251,15 +251,22 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
     {
         Context.SelectedColumnIndex = TwodaDataGrid.CurrentColumn?.DisplayIndex ?? 0;
 
-        if (e.InitialPressMouseButton == MouseButton.Right && e.Source is Grid grid && grid.TemplatedParent is DataGridColumnHeader header)
+        if (e.InitialPressMouseButton == MouseButton.Right)
         {
-            var contextMenu = new ContextMenu();
-            var headerText = (header.Content as ColumnViewModel)!.Header;
-            contextMenu.Items.Add(new MenuItem {  Header = "Rename Column", Command = ReactiveCommand.Create(() => RenameColumn(headerText)), IsEnabled = (headerText != "Row Header") });
-            contextMenu.Items.Add(new MenuItem {  Header = "Delete Column", Command = ReactiveCommand.Create(() => RemoveColumn(headerText)), IsEnabled = (headerText != "Row Header") });
+            if (e.Source is Grid grid && grid.TemplatedParent is DataGridColumnHeader header)
+            {
+                var contextMenu = new ContextMenu();
+                var headerText = (header.Content as ColumnViewModel)!.Header;
+                contextMenu.Items.Add(new MenuItem { Header = "Delete Column", Command = ReactiveCommand.Create(() => RemoveColumn(headerText)), IsEnabled = (headerText != "Row Header") });
+                contextMenu.Items.Add(new MenuItem { Header = "Rename Column", Command = ReactiveCommand.Create(() => RenameColumn(headerText)), IsEnabled = (headerText != "Row Header") });
 
-            grid.ContextMenu = contextMenu;
-            contextMenu.Open(grid);
+                grid.ContextMenu = contextMenu;
+                contextMenu.Open(grid);
+            }
+            else if (e.Source is Control textBlock && textBlock.TemplatedParent is DataGridCell cell)
+            {
+
+            }
         }
         e.Route = Avalonia.Interactivity.RoutingStrategies.Tunnel;
     }
