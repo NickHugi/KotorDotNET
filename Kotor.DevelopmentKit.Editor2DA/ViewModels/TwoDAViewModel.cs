@@ -131,8 +131,6 @@ public class TwoDAViewModel : ReactiveObject
     }
     public void AddColumn(string columnHeader, IEnumerable<string> newCellValues)
     {
-        Columns.Add(columnHeader);
-
         _rowsSource.Edit(rows =>
         {
             for (int i = 0; i < rows.Count; i++)
@@ -140,18 +138,20 @@ public class TwoDAViewModel : ReactiveObject
                 rows[i].Add(newCellValues.ElementAtOrDefault(i) ?? "");
             }
         });
+
+        Columns.Add(columnHeader);
     }
     public void AddColumn(string columnHeader, IEnumerable<string> newCellValues, int columnIndex)
     {
-        Columns.Insert(columnIndex, columnHeader);
-
         _rowsSource.Edit(rows =>
         {
             for (int i = 0; i < rows.Count; i++)
             {
-                rows[i].Add(newCellValues.ElementAtOrDefault(i) ?? "");
+                rows[i].Insert(columnIndex, newCellValues.ElementAtOrDefault(i) ?? "");
             }
         });
+
+        Columns.Insert(columnIndex, columnHeader);
     }
 
     public void RemoveColumn(string columnHeader)
