@@ -10,14 +10,14 @@ namespace Kotor.DevelopmentKit.Editor2DA.Actions;
 
 public class EditCellAction : IAction<TwoDAResourceEditorViewModel>
 {
-    public int RowIndex { get; }
+    public int RowID { get; }
     public string ColumnHeader { get; }
     public string NewValue { get; }
     public string OldValue { get; }
 
-    public EditCellAction(int rowIndex, string columnHeader, string newValue, string oldValue)
+    public EditCellAction(int rowID, string columnHeader, string newValue, string oldValue)
     {
-        RowIndex = rowIndex;
+        RowID = rowID;
         ColumnHeader = columnHeader;
         NewValue = newValue;
         OldValue = oldValue;
@@ -25,15 +25,15 @@ public class EditCellAction : IAction<TwoDAResourceEditorViewModel>
 
     public void Apply(TwoDAResourceEditorViewModel data)
     {
-        data.Resource.SetCellText(RowIndex, ColumnHeader, NewValue);
+        data.Resource.SetCellText(RowID, ColumnHeader, NewValue);
         data.SelectedColumnIndex = data.Resource.GetColumnIndex(ColumnHeader);
-        data.SelectedRowIndex = RowIndex;
+        data.SelectedRowIndex = data.Resource.GetRowIndex(RowID);
     }
 
     public void Undo(TwoDAResourceEditorViewModel data)
     {
-        data.Resource.SetCellText(RowIndex, ColumnHeader, OldValue);
+        data.Resource.SetCellText(RowID, ColumnHeader, OldValue);
         data.SelectedColumnIndex = data.Resource.GetColumnIndex(ColumnHeader);
-        data.SelectedRowIndex = RowIndex;
+        data.SelectedRowIndex = RowID;
     }
 }

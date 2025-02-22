@@ -80,12 +80,20 @@ public class TwoDAViewModel : ReactiveObject
     public int GetRowID(int rowIndex)
     {
         var row = Rows.ElementAt(rowIndex);
-        return _rowsSource.Items.IndexOf(row);
+        var rowID = _rowsSource.Items.IndexOf(row);
+        return rowID;
     }
 
-    public void SetCellText(int rowID, string columnName, string value)
+    public int GetRowIndex(int rowID)
     {
-        var columnIndex = Columns.ToList().FindIndex(x => x.Header == columnName);
+        var row = _rowsSource.Items.ElementAt(rowID);
+        var rowIndex = Rows.IndexOf(row);
+        return rowIndex;
+    }
+
+    public void SetCellText(int rowID, string columnHeader, string value)
+    {
+        var columnIndex = GetColumnIndex(columnHeader);
 
         _rowsSource.Edit(rows =>
         {
