@@ -78,8 +78,8 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
             return;
 
         var rowIndex = TwodaDataGrid.SelectedIndex;
-        var columnHeader = (string)TwodaDataGrid.CurrentColumn.Header;
-        var columnIndex = Context.Resource.Columns.IndexOf(columnHeader);
+        var columnHeader = ((ColumnViewModel)TwodaDataGrid.CurrentColumn.Header).Header;
+        var columnIndex = Context.Resource.GetColumnIndex(columnHeader);
         var text = Context.Resource.Rows[rowIndex][columnIndex];
         await Clipboard.SetTextAsync(text);
     }
@@ -92,7 +92,7 @@ public partial class TwoDAResourceEditor : ResourceEditorBase
         var rowIndex = Context.SelectedRowIndex;
         var rowID = Context.Resource.GetRowID(Context.SelectedRowIndex);
         var currentColumn = TwodaDataGrid.CurrentColumn;
-        var columnHeader = (string)TwodaDataGrid.CurrentColumn.Header;
+        var columnHeader = ((ColumnViewModel)TwodaDataGrid.CurrentColumn.Header).Header;
         var newValue = await Clipboard.GetTextAsync() ?? "";
 
         Context.EditCell(rowID, columnHeader, newValue);

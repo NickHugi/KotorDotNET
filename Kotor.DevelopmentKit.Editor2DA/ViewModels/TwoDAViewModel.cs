@@ -85,7 +85,7 @@ public class TwoDAViewModel : ReactiveObject
 
     public void SetCellText(int rowID, string columnName, string value)
     {
-        var columnIndex = Columns.IndexOf(columnName);
+        var columnIndex = Columns.ToList().FindIndex(x => x.Header == columnName);
 
         _rowsSource.Edit(rows =>
         {
@@ -97,7 +97,7 @@ public class TwoDAViewModel : ReactiveObject
 
     public string GetCellText(int rowID, string columnName)
     {
-        var columnIndex = Columns.IndexOf(columnName);
+        var columnIndex = GetColumnIndex(columnName);
         return _rowsSource.Items[rowID].ElementAt(columnIndex);
     }
 
@@ -137,7 +137,19 @@ public class TwoDAViewModel : ReactiveObject
         {
             for (int i = 0; i < rows.Count; i++)
             {
-                rows[i].Add(newCellValues.ElementAt(i));
+                rows[i].Add(newCellValues.ElementAtOrDefault(i) ?? "");
+            }
+        });
+    }
+    public void AddColumn(string columnHeader, IEnumerable<string> newCellValues, int columnIndex)
+    {
+        Columns.Insert(columnIndex, columnHeader);
+
+        _rowsSource.Edit(rows =>
+        {
+            for (int i = 0; i < rows.Count; i++)
+            {
+                rows[i].Add(newCellValues.ElementAtOrDefault(i) ?? "");
             }
         });
     }
@@ -145,7 +157,6 @@ public class TwoDAViewModel : ReactiveObject
     public void RemoveColumn(string columnHeader)
     {
         var columnIndex = GetColumnIndex(columnHeader);
-        Columns.RemoveAt(columnIndex);
 
         _rowsSource.Edit(rows =>
         {
@@ -154,6 +165,8 @@ public class TwoDAViewModel : ReactiveObject
                 row.RemoveAt(columnIndex);
             }
         });
+
+        Columns.RemoveAt(columnIndex);
     }
 
     public int GetColumnIndex(string columnHeader)

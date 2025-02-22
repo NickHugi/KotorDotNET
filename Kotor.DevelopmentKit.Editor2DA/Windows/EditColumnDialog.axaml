@@ -15,7 +15,7 @@
             <TextBox Text="{Binding ColumnHeader}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Spacing="5">
-            <Button IsEnabled="{Binding ValidationContext.IsValid}" Command="{Binding #Window.Submit}">Add Column</Button>
+            <Button IsEnabled="{Binding ValidationContext.IsValid}" Command="{Binding #Window.Submit}">Set Column</Button>
             <Button Command="{Binding #Window.Cancel}">Cancel</Button>
         </StackPanel>
     </StackPanel>
