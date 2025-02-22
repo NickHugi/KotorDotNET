@@ -26,14 +26,14 @@ public class EditCellAction : IAction<TwoDAResourceEditorViewModel>
     public void Apply(TwoDAResourceEditorViewModel data)
     {
         data.Resource.SetCellText(RowIndex, ColumnHeader, NewValue);
-        data.SelectedColumnIndex = data.Resource.Columns.IndexOf(ColumnHeader);
+        data.SelectedColumnIndex = data.Resource.GetColumnIndex(ColumnHeader);
         data.SelectedRowIndex = RowIndex;
     }
 
     public void Undo(TwoDAResourceEditorViewModel data)
     {
         data.Resource.SetCellText(RowIndex, ColumnHeader, OldValue);
-        data.SelectedColumnIndex = data.Resource.Columns.IndexOf(ColumnHeader);
+        data.SelectedColumnIndex = data.Resource.GetColumnIndex(ColumnHeader);
         data.SelectedRowIndex = RowIndex;
     }
 }
